@@ -1,0 +1,35 @@
+package com.proyecto.proyectoshopmi.data.remote
+
+import com.proyecto.proyectoshopmi.data.model.ProductoResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.PartMap
+import retrofit2.http.Path
+
+interface IProducto {
+
+    @GET("productos/ListarPorCategoria/{codCategoria}")
+    fun listarPorCategoria(@Path("codCategoria") codCategoria: Int): Call<List<ProductoResponse>>
+
+    @GET("productos/ListarTop5ProductosMasBaratos")
+    fun listarTop5MasBaratos(): Call<List<ProductoResponse>>
+
+    @GET("productos/ObtenerProducto/{codProducto}")
+    fun obtenerProducto(@Path("codProducto") codProducto: Int): Call<ProductoResponse>
+
+    @POST("productos/RegistrarProducto")
+    fun registrarProducto(@Part image: MultipartBody.Part?,
+                          @PartMap datos: Map<String, @JvmSuppressWildcards RequestBody>): Call<String>
+
+    @PUT("productos/ActualizarProducto")
+    fun actualizarProducto(@Part image: MultipartBody.Part?,
+                           @PartMap datos: Map<String, @JvmSuppressWildcards RequestBody>): Call<String>
+
+    @PUT("productos/CambiarEstadoProducto/{codProducto}")
+    fun cambiarEstadoProducto(@Path("codProducto") codProducto: Int): Call<String>
+}
