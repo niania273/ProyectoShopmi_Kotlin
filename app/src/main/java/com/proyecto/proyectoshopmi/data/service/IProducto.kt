@@ -1,4 +1,4 @@
-package com.proyecto.proyectoshopmi.data.remote
+package com.proyecto.proyectoshopmi.data.service
 
 import com.proyecto.proyectoshopmi.data.model.ProductoResponse
 import okhttp3.MultipartBody

@@ -9,5 +9,5 @@ data class ProductoResponse (
     val stock: Int,
     val estProducto: Boolean,
     val nomCategoria: String,
-    val nomMarca: String
+    val nombreMarca: String
 )
