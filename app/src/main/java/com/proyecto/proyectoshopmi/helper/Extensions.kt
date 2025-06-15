@@ -1,5 +1,6 @@
-package com.proyecto.proyectoshopmi.data.model
+package com.proyecto.proyectoshopmi.helper
 
+import com.proyecto.proyectoshopmi.data.model.request.ProductoFormRequest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

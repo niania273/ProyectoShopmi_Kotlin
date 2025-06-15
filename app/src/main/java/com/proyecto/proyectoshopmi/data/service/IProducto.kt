@@ -1,6 +1,6 @@
-package com.proyecto.proyectoshopmi.data.remote
+package com.proyecto.proyectoshopmi.data.service
 
-import com.proyecto.proyectoshopmi.data.model.ProductoResponse
+import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call

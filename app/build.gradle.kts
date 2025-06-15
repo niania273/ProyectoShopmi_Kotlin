@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.findKaptConfiguration
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
+    id("kotlin-kapt")
 }
 
 android {
@@ -46,6 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,4 +61,7 @@ dependencies {
     implementation("androidx.drawerlayout:drawerlayout:1.1.1")
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation("com.github.f0ris.sweetalert:library:1.5.6")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    findKaptConfiguration("com.github.bumptech.glide:compiler:4.16.0")
+
 }
