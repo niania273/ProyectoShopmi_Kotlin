@@ -1,7 +1,6 @@
 package com.proyecto.proyectoshopmi.data.service
 
 import android.content.Context
-import android.util.Log
 import com.proyecto.proyectoshopmi.data.client.RetrofitClient
 import com.proyecto.proyectoshopmi.data.model.request.UsuarioRequestLogin
 import com.proyecto.proyectoshopmi.data.model.request.UsuarioRequestRegistro
@@ -16,7 +15,7 @@ class UsuarioService(private val context: Context){
     private val api = RetrofitClient.usuarioService
     private val sessionManager = SessionManager(context)
 
-    //1. Registrar Usuario
+
     fun registrarUsuario(
         usuarioRequestRegistro: UsuarioRequestRegistro,
         onSuccess: (String) -> Unit,
