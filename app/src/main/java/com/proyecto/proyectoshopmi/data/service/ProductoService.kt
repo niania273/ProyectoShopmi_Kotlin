@@ -1,7 +1,7 @@
 package com.proyecto.proyectoshopmi.data.service
 
-import com.proyecto.proyectoshopmi.data.model.ProductoResponse
 import com.proyecto.proyectoshopmi.data.client.RetrofitClient
+import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

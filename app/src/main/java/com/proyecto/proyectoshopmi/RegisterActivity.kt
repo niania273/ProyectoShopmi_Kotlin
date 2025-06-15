@@ -16,7 +16,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setActivityContent(R.layout.activity_register)
 
-        val fechaNacimiento = findViewById<EditText>(R.id.editTextFechaNacimiento)
+        val fechaNacimiento = findViewById<EditText>(R.id.edtFecNac)
         val btnCancelar = findViewById<Button>(R.id.btnCancel)
 
         fechaNacimiento.setOnClickListener {

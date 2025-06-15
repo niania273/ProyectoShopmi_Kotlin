@@ -1,4 +1,4 @@
-package com.proyecto.proyectoshopmi.data.model
+package com.proyecto.proyectoshopmi.data.model.response
 
 data class PedidoDetalleResponse (
     val pedido: PedidoOneResponse,

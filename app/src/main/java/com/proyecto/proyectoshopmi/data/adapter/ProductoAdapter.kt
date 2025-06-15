@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.proyecto.proyectoshopmi.R
-import com.proyecto.proyectoshopmi.data.model.ProductoResponse
+import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 
 class ProductoAdapter(private val productos: List<ProductoResponse>) :
     RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {

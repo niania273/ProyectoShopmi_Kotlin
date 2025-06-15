@@ -1,7 +1,7 @@
 package com.proyecto.proyectoshopmi.data.service
 
-import com.proyecto.proyectoshopmi.data.model.PedidoDetalleResponse
-import com.proyecto.proyectoshopmi.data.model.PedidoResponse
+import com.proyecto.proyectoshopmi.data.model.response.PedidoDetalleResponse
+import com.proyecto.proyectoshopmi.data.model.response.PedidoResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -12,16 +12,16 @@ import retrofit2.http.Path
 
 interface IPedido {
 
-    @GET("/pedidos/listarPedidos")
+    @GET("pedidos/listarPedidos")
     fun listarPedidos(): Call<List<PedidoResponse>>
 
-    @GET("/pedidos/obtenerPedido/{codPedido}")
+    @GET("pedidos/obtenerPedido/{codPedido}")
     fun obtenerPedido(@Path("codPedido") codPedido: Int): PedidoDetalleResponse
 
-    @POST("/pedidos/registrarPedido")
+    @POST("pedidos/registrarPedido")
     fun registrarPedido(@Body pedidoDetalleResponse: PedidoDetalleResponse): Call<String>
 
-    @PUT("/pedidos/actualizarPedido/{codPedido}")
+    @PUT("pedidos/actualizarPedido/{codPedido}")
     fun actualizarPedido(@Path("codPedido") codPedido: Int, @Body codEstado: Int): Call<String>
 
     @DELETE("pedidos/eliminarPedido/{codPedido}")

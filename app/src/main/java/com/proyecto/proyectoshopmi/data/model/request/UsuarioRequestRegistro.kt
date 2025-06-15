@@ -1,4 +1,4 @@
-package com.proyecto.proyectoshopmi.data.model
+package com.proyecto.proyectoshopmi.data.model.request
 
 data class UsuarioRequestRegistro(
     val numeroDocumento: Int,

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.adapter.ProductoAdapter
-import com.proyecto.proyectoshopmi.data.model.ProductoResponse
+import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import com.proyecto.proyectoshopmi.data.service.ProductoService
 import com.proyecto.proyectoshopmi.helper.GridSpacingItemDecoration
 

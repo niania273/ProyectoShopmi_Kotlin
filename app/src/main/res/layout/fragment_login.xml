@@ -27,12 +27,20 @@
                 android:id="@+id/loginTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Iniciar Sesión"
+                android:text="Iniciar sesión"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:gravity="center"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="8dp" />
+
+            <!-- Texto clicable para registrarse debajo del título -->
+            <TextView
+                android:id="@+id/tvRegisterPrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="16dp" />
 
             <!-- Campo Email -->
             <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +49,7 @@
                 android:hint="Correo electrónico">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextEmail"
+                    android:id="@+id/edtCorreo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -55,13 +63,13 @@
                 android:hint="Contraseña">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPassword"
+                    android:id="@+id/edtContrasenia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Botones lado a lado -->
+            <!-- Botón Iniciar Sesión -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,26 +78,14 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/btnLogin"
+                    android:id="@+id/btnIniciarSesion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="Iniciar Sesión"
+                    android:text="Iniciar sesión"
                     android:textSize="13sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="#FF833E" />
-
-                <Button
-                    android:id="@+id/btnRegister"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:text="Registrarse"
-                    android:textSize="13sp"
-                    android:textColor="@android:color/black"
-                    android:backgroundTint="#C4C4C4" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

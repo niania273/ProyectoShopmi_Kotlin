@@ -48,7 +48,7 @@
                     android:hint="Nombres">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextNombres"
+                        android:id="@+id/edtNombres"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
@@ -62,7 +62,7 @@
                     android:hint="Apellidos">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextApellidos"
+                        android:id="@+id/edtApellidos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
@@ -76,7 +76,7 @@
                     android:hint="DNI">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextDNI"
+                        android:id="@+id/edtDni"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
@@ -91,7 +91,7 @@
                     android:hint="Fecha de Nacimiento">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextFechaNacimiento"
+                        android:id="@+id/edtFecNac"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
@@ -121,7 +121,7 @@
                     android:hint="Teléfono">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextTelefono"
+                        android:id="@+id/edtTelefono"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
@@ -135,7 +135,7 @@
                     android:hint="Correo electrónico">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextCorreo"
+                        android:id="@+id/edtCorreo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress" />
@@ -148,7 +148,7 @@
                     android:hint="Contraseña">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextContrasena"
+                        android:id="@+id/edtContrasenia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />
@@ -161,7 +161,7 @@
                     android:hint="Confirmar Contraseña">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextConfirmarContrasena"
+                        android:id="@+id/edtConfirmContrasenia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />

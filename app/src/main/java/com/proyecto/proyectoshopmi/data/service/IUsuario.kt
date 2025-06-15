@@ -1,16 +1,18 @@
 package com.proyecto.proyectoshopmi.data.service
 
-import com.proyecto.proyectoshopmi.data.model.UsuarioRequestLogin
-import com.proyecto.proyectoshopmi.data.model.UsuarioRequestRegistro
+import com.proyecto.proyectoshopmi.data.model.request.UsuarioRequestLogin
+import com.proyecto.proyectoshopmi.data.model.request.UsuarioRequestRegistro
+import com.proyecto.proyectoshopmi.data.model.response.LoginResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface IUsuario {
 
-    @POST("/inicio/registrarse")
-    suspend fun Register(@Body usuarioRequestRegistro: UsuarioRequestRegistro): Response<String>
+    @POST("inicio/registrarse")
+    fun register(@Body request: UsuarioRequestRegistro): Call<String>
 
     @POST("inicio/iniciarsesion")
-    suspend fun Login(@Body usuarioRequestLogin: UsuarioRequestLogin): Response<String>
+    fun login(@Body request: UsuarioRequestLogin): Call<LoginResponse>
 }

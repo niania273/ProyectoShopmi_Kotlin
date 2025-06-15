@@ -20,7 +20,7 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val fechaNacimiento = view.findViewById<EditText>(R.id.editTextFechaNacimiento)
+        val fechaNacimiento = view.findViewById<EditText>(R.id.edtFecNac)
         val btnCancelar = view.findViewById<Button>(R.id.btnCancel)
 
         fechaNacimiento.setOnClickListener {

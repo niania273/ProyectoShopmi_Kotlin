@@ -1,4 +1,4 @@
-package com.proyecto.proyectoshopmi.data.model
+package com.proyecto.proyectoshopmi.data.model.response
 
 data class PedidoOneResponse (
     val codPedido: Int,

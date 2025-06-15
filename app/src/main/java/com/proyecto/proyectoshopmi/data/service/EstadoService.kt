@@ -6,16 +6,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoriaService {
+class EstadoService {
 
-    private val api = RetrofitClient.categoriaService
+    private val api = RetrofitClient.estadoPedidoService
 
-    //SelectCategorias
-    fun selectCategorias(
+    //SelectEstados
+    fun selectEstados(
         onSuccess: (List<SelectResponse>) -> Unit,
         onError: (String) -> Unit
     ){
-        api.selectCategorias().enqueue(object : Callback<List<SelectResponse>> {
+        api.selectEstados().enqueue(object : Callback<List<SelectResponse>> {
             override fun onResponse(
                 call: Call<List<SelectResponse>>,
                 response: Response<List<SelectResponse>>
