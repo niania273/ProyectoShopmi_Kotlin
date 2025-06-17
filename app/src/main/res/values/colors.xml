@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background_global">#FFEBE0</color>
     <color name="teal_700">#008577</color>
+    <color name="orange">#FF6709</color>
 
     <style name="MenuItemStyle" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">match_parent</item>

@@ -3,6 +3,7 @@ package com.proyecto.proyectoshopmi.fragment.producto
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.adapter.ProductoAdapter
+import com.proyecto.proyectoshopmi.data.model.request.ProductoDetalleRequest
 import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import com.proyecto.proyectoshopmi.data.service.ProductoService
 import com.proyecto.proyectoshopmi.helper.GridSpacingItemDecoration
+import com.proyecto.proyectoshopmi.helper.SessionManager
 
 class ListarProductosFragment : Fragment() {
 
@@ -35,6 +38,8 @@ class ListarProductosFragment : Fragment() {
     private val productosPorPagina = 6
     private var paginaActual = 1
     private var totalPaginas = 1
+
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +61,8 @@ class ListarProductosFragment : Fragment() {
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.addItemDecoration(GridSpacingItemDecoration(2, 32, true))
+
+        sessionManager = SessionManager(requireContext())
 
         productoService.obtenerProductosPorCategoria(
             categoriaId,
@@ -111,11 +118,31 @@ class ListarProductosFragment : Fragment() {
     }
 
     private fun mostrarPagina(pagina: Int, animRight: Boolean = true) {
+        Log.d("DEBUG", "Mostrando página $pagina con ${productosFiltrados.size} productos")
         val desde = (pagina - 1) * productosPorPagina
         val hasta = (desde + productosPorPagina).coerceAtMost(productosFiltrados.size)
         val paginaProductos = productosFiltrados.subList(desde, hasta)
 
-        adapter = ProductoAdapter(paginaProductos)
+        adapter = ProductoAdapter(paginaProductos) { producto ->
+            val productoSeleccionado = ProductoDetalleRequest(
+                codProducto = producto.codProducto,
+                nomProducto = producto.nomProducto,
+                imgProducto = producto.imgProducto,
+                preUni = producto.preUni,
+                stock = producto.stock,
+                cantidad = 1,
+            )
+
+            val yaExiste = sessionManager.obtenerCarrito().any { it.codProducto == producto.codProducto }
+
+            if (yaExiste) {
+                Toast.makeText(requireContext(), "${producto.nomProducto} ya está en el carrito", Toast.LENGTH_SHORT).show()
+            } else {
+                sessionManager.agregarProductoAlCarrito(productoSeleccionado)
+                Toast.makeText(requireContext(), "${producto.nomProducto} agregado al carrito", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         recyclerView.adapter = adapter
 
         val anim = AnimationUtils.loadAnimation(

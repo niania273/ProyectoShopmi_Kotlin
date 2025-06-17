@@ -1,8 +1,10 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,11 +14,11 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
-            android:paddingTop="24dp"
-            android:elevation="4dp">
+            android:elevation="4dp"
+            android:fitsSystemWindows="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -36,20 +38,45 @@
 
                 <ImageButton
                     android:id="@+id/btnUser"
-                    android:layout_width="57dp"
-                    android:layout_height="53dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="55dp"
+                    android:layout_marginEnd="48dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="Usuario"
                     android:padding="8dp"
                     android:src="@drawable/ic_user" />
 
                 <ImageButton
+                    android:id="@+id/btnShop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="88dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Carrito"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_shopping_cart"
+                    android:visibility="gone"
+                    />
+                <ImageButton
+                    android:id="@+id/btnPedidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="88dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Carrito"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_deliver"
+                    android:visibility="gone"
+                    />
+
+                <ImageButton
                     android:id="@+id/btnMenu"
-                    android:layout_width="55dp"
-                    android:layout_height="53dp"
-                    android:layout_marginEnd="-114dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_marginEnd="-80dp"
                     android:layout_toStartOf="@id/btnUser"
                     android:background="@android:color/transparent"
                     android:contentDescription="Menú"
@@ -58,15 +85,130 @@
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- Aquí se cargan los fragments -->
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#FF833E"
+            android:padding="8dp"
+            android:gravity="center"
+            android:fitsSystemWindows="true"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp">
+
+
+            <LinearLayout
+                android:id="@+id/llTienda"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:src="@drawable/ic_home"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tienda"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llSmartphones"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:src="@drawable/ic_smartphone"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Smartphones"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llAudio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:src="@drawable/ic_audio"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Audio"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llVisitanos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:src="@drawable/ic_location"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visítanos"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Drawer lateral derecho -->
+
     <LinearLayout
         android:id="@+id/right_drawer"
         android:layout_width="280dp"
@@ -77,7 +219,7 @@
         android:background="@android:color/white">
 
         <Button
-            android:id="@+id/btnInicio"
+            android:id="@+id/btnTienda"
             android:text="Inicio"
             style="@style/MenuItemStyle"
             android:drawableStart="@drawable/ic_home"
@@ -131,13 +273,6 @@
             android:drawableStart="@drawable/ic_camera"
             android:tint="@null"
             android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/btnVisitanos"
-            android:text="Visítanos"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_location"
-            android:tint="@null" />
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

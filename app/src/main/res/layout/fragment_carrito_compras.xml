@@ -1,14 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerCarrito"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.pedido.CarritoComprasFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:paddingBottom="140dp"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="16dp">
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/ic_cart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_cart" />
+
+        <TextView
+            android:id="@+id/tv_mi_carrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Mi carrito"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCarrito"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingBottom="8dp" />
+</LinearLayout>
+
+    <!-- Vista vacía -->
+<LinearLayout
+android:id="@+id/layoutVacio"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center"
+android:background="@android:color/white"
+android:visibility="gone"
+android:padding="24dp">
+
+<TextView
+    android:id="@+id/tvSinProductos"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Ningún producto seleccionado"
+    android:textSize="18sp"
+    android:textColor="@color/black"
+    android:layout_marginBottom="16dp" />
+
+<Button
+    android:id="@+id/btnEmpezarComprar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Empezar a comprar"
+    android:backgroundTint="@color/main_green_color"
+    android:textColor="@android:color/white" />
+</LinearLayout>
+
+    <!-- Resumen del pedido fijo abajo -->
+<LinearLayout
+android:id="@+id/layoutResumen"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom"
+android:background="@android:color/white"
+android:elevation="8dp"
+android:orientation="vertical"
+android:padding="16dp"
+android:visibility="gone">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Resumen del Pedido"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:layout_marginBottom="12dp" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de Entrega:"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvFechaEntrega"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jun 10, 2025"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total:"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S/. 1456.99"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+</LinearLayout>
+
+<Button
+    android:id="@+id/btnRegistrarPedido"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Registrar Pedido"
+    android:backgroundTint="@color/main_green_color"
+    android:textColor="@android:color/white" />
+</LinearLayout>
+
+    </FrameLayout>

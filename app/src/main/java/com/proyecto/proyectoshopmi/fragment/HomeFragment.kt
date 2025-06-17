@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
         // Cargar productos
         productoService.obtenerTop5MasBaratos(
             onSuccess = { productos ->
-                adapter = ProductoAdapter(productos)
+                adapter = ProductoAdapter(productos){}
                 recyclerView.adapter = adapter
                 productosSize = productos.size
                 handler.postDelayed(scrollRunnable, intervalo)
