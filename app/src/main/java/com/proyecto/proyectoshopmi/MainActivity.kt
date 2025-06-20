@@ -1,12 +1,14 @@
 package com.proyecto.proyectoshopmi
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -126,6 +128,7 @@ class MainActivity : AppCompatActivity(), LoginListener {
     }
 
     private fun setupMenuButtons() {
+        val btnTienda = findViewById<Button>(R.id.btnTienda)
         val btnSmartphones = findViewById<Button>(R.id.btnSmartphones)
         val btnComputo = findViewById<Button>(R.id.btnComputo)
         val btnAudio = findViewById<Button>(R.id.btnAudio)
@@ -133,13 +136,83 @@ class MainActivity : AppCompatActivity(), LoginListener {
         val btnHogarInteligente = findViewById<Button>(R.id.btnHogarInteligente)
         val btnFotografia = findViewById<Button>(R.id.btnFotografia)
 
-        btnSmartphones.setOnClickListener { abrirFragmentPorCategoria(1) }
-        btnComputo.setOnClickListener { abrirFragmentPorCategoria(2) }
-        btnAudio.setOnClickListener { abrirFragmentPorCategoria(3) }
-        btnGaming.setOnClickListener { abrirFragmentPorCategoria(4) }
-        btnHogarInteligente.setOnClickListener { abrirFragmentPorCategoria(5) }
-        btnFotografia.setOnClickListener { abrirFragmentPorCategoria(6) }
+        var llTienda = findViewById<LinearLayout>(R.id.llTienda)
+        var llSmartphones = findViewById<LinearLayout>(R.id.llSmartphones)
+        var llAudio = findViewById<LinearLayout>(R.id.llAudio)
+        var llVisitanos = findViewById<LinearLayout>(R.id.llVisitanos)
 
+        btnTienda.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, HomeFragment())
+                .addToBackStack(null)
+                .commit()
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+        btnSmartphones.setOnClickListener {
+            abrirFragmentPorCategoria(1)
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+        btnComputo.setOnClickListener {
+            abrirFragmentPorCategoria(2)
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+        btnAudio.setOnClickListener {
+            abrirFragmentPorCategoria(3)
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+        btnGaming.setOnClickListener {
+            abrirFragmentPorCategoria(4)
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+        btnHogarInteligente.setOnClickListener {
+            abrirFragmentPorCategoria(5)
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+        btnFotografia.setOnClickListener {
+            abrirFragmentPorCategoria(6)
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
+
+        llTienda.setOnClickListener {
+            val fragment = HomeFragment()
+            val bundle = Bundle().apply {
+                putInt("categoria_id", -1)
+            }
+            fragment.arguments = bundle
+            mostrarFragment(fragment)
+        }
+
+        llSmartphones.setOnClickListener {
+            val fragment = ListarProductosFragment()
+            val bundle = Bundle().apply {
+                putInt("categoria_id", 1)
+            }
+            fragment.arguments = bundle
+            mostrarFragment(fragment)
+        }
+
+        llAudio.setOnClickListener {
+            val fragment = ListarProductosFragment()
+            val bundle = Bundle().apply {
+                putInt("categoria_id", 3)
+            }
+            fragment.arguments = bundle
+            mostrarFragment(fragment)
+        }
+
+        llVisitanos.setOnClickListener {
+            val url = "https://maps.app.goo.gl/VxynBgsrK1aCcwNB9"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            intent.setPackage("com.android.chrome")
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "No se encontró un navegador para abrir la ubicación.", Toast.LENGTH_SHORT).show()
+                intent.setPackage(null)
+                startActivity(intent)
+            }
+        }
         mostrarBotonPorRol()
     }
 

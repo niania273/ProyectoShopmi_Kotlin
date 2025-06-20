@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -103,7 +104,6 @@
             android:clipToPadding="false"
             android:paddingBottom="16dp">
 
-
             <LinearLayout
                 android:id="@+id/llTienda"
                 android:layout_width="0dp"
@@ -208,70 +208,104 @@
         </LinearLayout>
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/right_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@android:color/white">
+        android:paddingTop="16dp"
+        android:paddingHorizontal="16dp"
+        android:background="#E8E8E8"> <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnTienda"
+        android:text="Tienda"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#FF833E" app:cornerRadius="8dp" app:icon="@drawable/ic_home" app:iconTint="@android:color/white" app:iconGravity="textStart" app:iconPadding="16dp" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
 
-        <Button
-            android:id="@+id/btnTienda"
-            android:text="Inicio"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_home"
-            android:tint="@null"
-            android:layout_marginBottom="8dp" />
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSmartphones"
             android:text="Smartphones"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_smartphone"
-            android:tint="@null"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF833E"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_smartphone"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnComputo"
             android:text="Cómputo"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_laptop"
-            android:tint="@null"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF833E"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_laptop"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAudio"
             android:text="Audio"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_audio"
-            android:tint="@null"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF833E"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_audio"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGaming"
             android:text="Gaming"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_gaming"
-            android:tint="@null"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF833E"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_gaming"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnHogarInteligente"
             android:text="Hogar inteligente"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_home_smart"
-            android:tint="@null"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF833E"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_home_smart"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnFotografia"
             android:text="Fotografía"
-            style="@style/MenuItemStyle"
-            android:drawableStart="@drawable/ic_camera"
-            android:tint="@null"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF833E"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_camera"
+            app:iconTint="@android:color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
     </LinearLayout>
 

@@ -88,14 +88,14 @@ class ListarProductosFragment : Fragment() {
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
         recyclerView.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, true))
-        recyclerView.setHasFixedSize(true) // Mejora el rendimiento del RecyclerView
+        recyclerView.setHasFixedSize(true)
 
         sessionManager = SessionManager(requireContext())
 
         val opcionesFiltro = listOf("Todo", "Disponibles", "Precio ↑", "Precio ↓")
         val adapterFiltro = ArrayAdapter(requireContext(), R.layout.dropdown_menu_popup_item, opcionesFiltro)
         spinnerFiltro.setAdapter(adapterFiltro)
-        spinnerFiltro.setText(opcionesFiltro[0], false) // Establecer
+        spinnerFiltro.setText(opcionesFiltro[0], false)
 
         spinnerFiltro.setOnItemClickListener { _, _, _, _ -> aplicarFiltros() }
 
@@ -105,12 +105,9 @@ class ListarProductosFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // *** Inicializar el adaptador AQUÍ, una sola vez en onViewCreated ***
-        // Pasa las lambdas necesarias, incluso si son nulas para los callbacks opcionales
         adapter = ProductoAdapter(
-            productos = emptyList(), // Inicialmente con una lista vacía
+            productos = emptyList(),
             onItemClicked = { producto ->
-                // Lógica de clic para agregar al carrito, como la tenías
                 val productoSeleccionado = ProductoDetalleRequest(
                     codProducto = producto.codProducto,
                     nomProducto = producto.nomProducto,
@@ -129,18 +126,17 @@ class ListarProductosFragment : Fragment() {
                     Toast.makeText(requireContext(), "${producto.nomProducto} agregado al carrito", Toast.LENGTH_SHORT).show()
                 }
             },
-            onActualizarClicked = null, // No se necesita aquí, se pasa como null
-            onDesactivarClicked = null  // No se necesita aquí, se pasa como null
+            onActualizarClicked = null,
+            onDesactivarClicked = null
         )
-        recyclerView.adapter = adapter // Asigna el adaptador al RecyclerView una vez
+        recyclerView.adapter = adapter
 
-        cargarProductos() // Llama a la función para cargar los productos
+        cargarProductos()
 
         btnAnterior.setOnClickListener {
             if (paginaActual > 1) {
                 paginaActual--
                 mostrarPagina(paginaActual, animRight = false)
-                // actualizarBotonesPaginacion() // Se llama dentro de mostrarPagina
             }
         }
 
@@ -148,7 +144,6 @@ class ListarProductosFragment : Fragment() {
             if (paginaActual < totalPaginas) {
                 paginaActual++
                 mostrarPagina(paginaActual, animRight = true)
-                // actualizarBotonesPaginacion() // Se llama dentro de mostrarPagina
             }
         }
     }
@@ -206,18 +201,15 @@ class ListarProductosFragment : Fragment() {
             )
             recyclerView.startAnimation(anim)
         } else {
-            // Si no hay productos, puedes limpiar la animación o hacer algo más
             recyclerView.clearAnimation()
         }
-
-        actualizarBotonesPaginacion() // Actualizar botones después de mostrar la página
+        actualizarBotonesPaginacion()
     }
 
     private fun actualizarBotonesPaginacion() {
         btnAnterior.isEnabled = paginaActual > 1
         btnSiguiente.isEnabled = paginaActual < totalPaginas
 
-        // Estilos para los botones habilitados/deshabilitados
         btnAnterior.alpha = if (btnAnterior.isEnabled) 1f else 0.5f
         btnSiguiente.alpha = if (btnSiguiente.isEnabled) 1f else 0.5f
 
