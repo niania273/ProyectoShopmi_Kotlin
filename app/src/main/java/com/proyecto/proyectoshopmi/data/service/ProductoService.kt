@@ -5,7 +5,6 @@ import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Callback
 import retrofit2.Call
@@ -74,12 +73,12 @@ class ProductoService {
         onError: (String) -> Unit
     ) {
         val imagePart = imageFile?.let {
-            val requestFile = it.asRequestBody("image/*".toMediaTypeOrNull())
+            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), it)
             MultipartBody.Part.createFormData("imgProducto", it.name, requestFile)
         }
 
-        val dataMap = productoData.mapValues {
-            it.value.toRequestBody("text/plain".toMediaTypeOrNull())
+        val dataMap: Map<String, RequestBody> = productoData.mapValues {
+            RequestBody.create("text/plain".toMediaTypeOrNull(), it.value.toString())
         }
 
         api.registrarProducto(imagePart, dataMap).enqueue(object : Callback<String> {

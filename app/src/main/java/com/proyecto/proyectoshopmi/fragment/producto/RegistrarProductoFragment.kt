@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.service.ProductoService
 import com.proyecto.proyectoshopmi.data.model.response.SelectResponse
+import com.proyecto.proyectoshopmi.data.service.CategoriaService
+import com.proyecto.proyectoshopmi.data.service.MarcaService
 import com.proyecto.proyectoshopmi.databinding.FragmentRegistrarProductoBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -29,6 +31,8 @@ class RegistrarProductoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val productoService = ProductoService()
+    private val marcaService = MarcaService()
+    private val categoriaService = CategoriaService()
     private var selectedImageFile: File? = null
 
     private val pickImageLauncher: ActivityResultLauncher<String> =
@@ -61,14 +65,13 @@ class RegistrarProductoFragment : Fragment() {
         }
 
         // Cargar categorías y configurar AutoCompleteTextView
-        productoService.selectCategorias(
+        categoriaService.selectCategorias(
             onSuccess = { data ->
                 categorias = data
                 val adapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    // *** CORREGIDO AQUÍ: Usar 'it.text' ***
-                    categorias.map { it.text }
+                    categorias.map { it.name }
                 )
                 binding.actvCategoria.setAdapter(adapter)
 
@@ -82,14 +85,13 @@ class RegistrarProductoFragment : Fragment() {
         )
 
         // Cargar marcas y configurar AutoCompleteTextView
-        productoService.selectMarcas(
+        marcaService.selectMarcas(
             onSuccess = { data ->
                 marcas = data
                 val adapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    // *** CORREGIDO AQUÍ: Usar 'it.text' ***
-                    marcas.map { it.text }
+                    marcas.map { it.name }
                 )
                 binding.actvMarca.setAdapter(adapter)
 
