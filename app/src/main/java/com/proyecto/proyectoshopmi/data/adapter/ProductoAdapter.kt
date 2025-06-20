@@ -4,16 +4,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout // Importar LinearLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
+import com.proyecto.proyectoshopmi.helper.SessionManager
+import androidx.fragment.app.FragmentActivity
 
 class ProductoAdapter(
     private var productos: List<ProductoResponse>,
-    private val onItemClicked: (ProductoResponse) -> Unit,
+    private val onAddToCartClicked: (ProductoResponse) -> Unit,
+    private val onViewProductClicked: ((ProductoResponse) -> Unit),
     private val onActualizarClicked: ((ProductoResponse) -> Unit)? = null,
     private val onDesactivarClicked: ((ProductoResponse) -> Unit)? = null
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
@@ -21,41 +25,50 @@ class ProductoAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_producto, parent, false)
-        return ProductoViewHolder(view)
+
+        val sessionManager = SessionManager(parent.context)
+        val activity = parent.context as? FragmentActivity
+        return ProductoViewHolder(view, sessionManager, activity)
     }
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productos[position]
-        holder.bind(producto, onItemClicked, onActualizarClicked, onDesactivarClicked)
+        holder.bind(producto, onAddToCartClicked, onViewProductClicked, onActualizarClicked, onDesactivarClicked)
     }
 
     override fun getItemCount(): Int = productos.size
 
-    // Función para actualizar los datos del adaptador
     fun updateData(newProducts: List<ProductoResponse>) {
         productos = newProducts
-        notifyDataSetChanged() // Notifica al RecyclerView que los datos han cambiado
+        notifyDataSetChanged()
     }
 
-    class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ProductoViewHolder(
+        itemView: View,
+        private val sessionManager: SessionManager,
+        private val activity: FragmentActivity?
+    ) : RecyclerView.ViewHolder(itemView) {
+
         private val estado: TextView = itemView.findViewById(R.id.tvEstado)
         val nombreMarca: TextView = itemView.findViewById(R.id.tvMarca)
         private val nombre: TextView = itemView.findViewById(R.id.tvNombreProducto)
         private val descripcion: TextView = itemView.findViewById(R.id.tvDescripcion)
         private val precio: TextView = itemView.findViewById(R.id.tvPrecio)
         private val imagen: ImageView = itemView.findViewById(R.id.ivProducto)
-        private val btnAgregarCarrito: View = itemView.findViewById(R.id.btnAgregarCarrito)
-        private val btnActualizar: View = itemView.findViewById(R.id.btnActualizar)
-        private val btnDesactivar: View = itemView.findViewById(R.id.btnDesactivar)
-        private val layoutBotonesAdicionales: LinearLayout = itemView.findViewById(R.id.layoutBotonesAdicionales)
-
+        private val btnAgregarCarrito: MaterialButton = itemView.findViewById(R.id.btnAgregarCarrito)
+        private val btnActualizar: View = itemView.findViewById(R.id.item_btnActualizar)
+        private val btnEliminar: View = itemView.findViewById(R.id.item_btnEliminar)
+        private val layoutBotonesAdicionales: LinearLayout = itemView.findViewById(R.id.linearLayoutButtons)
 
         fun bind(
             producto: ProductoResponse,
-            onItemClicked: (ProductoResponse) -> Unit,
+            onAddToCartClicked: (ProductoResponse) -> Unit,
+            onViewProductClicked: (ProductoResponse) -> Unit,
             onActualizarClicked: ((ProductoResponse) -> Unit)?,
             onDesactivarClicked: ((ProductoResponse) -> Unit)?
         ) {
+            val usuario = sessionManager.obtenerUsuario()
+
             nombreMarca.text = producto.nombreMarca.uppercase()
             nombre.text = producto.nomProducto
             descripcion.text = producto.descripcion
@@ -75,21 +88,32 @@ class ProductoAdapter(
                 .error(R.drawable.ic_launcher_foreground)
                 .into(imagen)
 
-            btnAgregarCarrito.setOnClickListener {
-                onItemClicked(producto)
+            imagen.setOnClickListener {
+                onViewProductClicked(producto)
             }
 
-            // Manejo de botones adicionales (actualizar/desactivar)
-            // Si quieres que estos botones aparezcan bajo ciertas condiciones, aquí es donde lo harías.
-            // Por ejemplo, si solo deben aparecer para el administrador:
-            // if (esAdmin) {
-            //    layoutBotonesAdicionales.visibility = View.VISIBLE
-            //    btnActualizar.setOnClickListener { onActualizarClicked?.invoke(producto) }
-            //    btnDesactivar.setOnClickListener { onDesactivarClicked?.invoke(producto) }
-            // } else {
-            //    layoutBotonesAdicionales.visibility = View.GONE
-            // }
-            // Para el propósito de esta imagen, los dejaremos ocultos por defecto en el XML.
+            btnAgregarCarrito.visibility = View.GONE
+            layoutBotonesAdicionales.visibility = View.GONE
+
+            if (usuario != null) {
+                when (usuario.rolId) {
+                    1 -> {
+                        btnAgregarCarrito.visibility = View.VISIBLE
+                        btnAgregarCarrito.setOnClickListener {
+                            onAddToCartClicked(producto)
+                        }
+                    }
+                    2, 3 -> {
+                        layoutBotonesAdicionales.visibility = View.VISIBLE
+                        btnActualizar.setOnClickListener {
+                            onActualizarClicked?.invoke(producto)
+                        }
+                        btnEliminar.setOnClickListener {
+                            onDesactivarClicked?.invoke(producto)
+                        }
+                    }
+                }
+            }
         }
     }
 }

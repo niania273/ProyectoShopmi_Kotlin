@@ -13,9 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.adapter.ProductoAdapter
+import com.proyecto.proyectoshopmi.data.model.request.ProductoDetalleRequest
 import com.proyecto.proyectoshopmi.data.service.ProductoService
 import com.proyecto.proyectoshopmi.fragment.autenticacion.LoginFragment
 import com.proyecto.proyectoshopmi.fragment.autenticacion.RegisterFragment
+import com.proyecto.proyectoshopmi.fragment.producto.ActualizarProductoFragment
+import com.proyecto.proyectoshopmi.fragment.producto.VerProductoFragment
+import com.proyecto.proyectoshopmi.helper.SessionManager
 
 class HomeFragment : Fragment() {
 
@@ -81,34 +85,76 @@ class HomeFragment : Fragment() {
                 .commit()
         }
 
-        // Cargar productos
-//        productoService.obtenerTop5MasBaratos(
-//            onSuccess = { productos ->
-//                adapter = ProductoAdapter(productos){}
-//                recyclerView.adapter = adapter
-//                productosSize = productos.size
-//                handler.postDelayed(scrollRunnable, intervalo)
-//            },
-//            onError = { errorMsg ->
-//                // Aquí puedes mostrar un Toast o Snackbar
-//            }
-//        )
-
         productoService.obtenerTop5MasBaratos(
             onSuccess = { productos ->
                 adapter = ProductoAdapter(
                     productos = productos,
-                    onItemClicked = { producto ->
+                    onAddToCartClicked = { producto ->
+                        val productoSeleccionado = ProductoDetalleRequest(
+                            codProducto = producto.codProducto,
+                            nomProducto = producto.nomProducto,
+                            imgProducto = producto.imgProducto,
+                            preUni = producto.preUni,
+                            stock = producto.stock,
+                            cantidad = 1,
+                        )
+
+                        val sessionManager = SessionManager(requireContext())
+                        val yaExiste = sessionManager.obtenerCarrito().any { it.codProducto == producto.codProducto }
+
+                        if (yaExiste) {
+                            Toast.makeText(requireContext(), "${producto.nomProducto} ya está en el carrito", Toast.LENGTH_SHORT).show()
+                        } else {
+                            sessionManager.agregarProductoAlCarrito(productoSeleccionado)
+                            Toast.makeText(requireContext(), "${producto.nomProducto} agregado al carrito", Toast.LENGTH_SHORT).show()
+                        }
                     },
-                    onActualizarClicked = null,
-                    onDesactivarClicked = null
+                    onViewProductClicked = { producto ->
+                        val bundle = Bundle().apply {
+                            putInt("codProducto", producto.codProducto)
+                            putString("nomProducto", producto.nomProducto)
+                            putString("imgProducto", producto.imgProducto)
+                            putDouble("preUni", producto.preUni ?: 0.0)
+                            putInt("stock", producto.stock ?: 0)
+                            putString("descripcion", producto.descripcion)
+                            putString("nombreMarca", producto.nombreMarca)
+                        }
+                        val fragment = VerProductoFragment().apply { arguments = bundle }
+
+                        requireActivity().supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            .addToBackStack(null)
+                            .commit()
+                    },
+                    onActualizarClicked = { producto ->
+                        val bundle = Bundle().apply {
+                            putInt("codProducto", producto.codProducto)
+                            putString("nomProducto", producto.nomProducto)
+                            putString("imgProducto", producto.imgProducto)
+                            putDouble("preUni", producto.preUni ?: 0.0)
+                            putInt("stock", producto.stock ?: 0)
+                            putString("descripcion", producto.descripcion)
+                            putString("nombreMarca", producto.nombreMarca)
+                        }
+                        val fragment = ActualizarProductoFragment().apply { arguments = bundle }
+
+                        requireActivity().supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            .addToBackStack(null)
+                            .commit()
+                    },
+                    onDesactivarClicked = { producto ->
+                        Toast.makeText(requireContext(), "Confirmar eliminación de ${producto.nomProducto}", Toast.LENGTH_SHORT).show()
+                        // productoService.desactivarProducto(producto.codProducto, onSuccess = { /* ... */ }, onError = { /* ... */ })
+                    }
                 )
                 recyclerView.adapter = adapter
                 productosSize = productos.size
                 handler.postDelayed(scrollRunnable, intervalo)
             },
             onError = { errorMsg ->
-                // Aquí puedes mostrar un Toast o Snackbar
                 Toast.makeText(context, "Error: $errorMsg", Toast.LENGTH_SHORT).show()
             }
         )

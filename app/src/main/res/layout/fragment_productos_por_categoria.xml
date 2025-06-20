@@ -7,48 +7,66 @@
     android:orientation="vertical">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingHorizontal="16dp" android:paddingTop="16dp"
-    android:paddingBottom="8dp"
-    android:background="#F8F8F8" android:elevation="2dp"> <EditText
-    android:id="@+id/etFiltro"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rounded_edittext_background"
-    android:drawableStart="@drawable/ic_search"
-    android:drawablePadding="8dp"
-    android:hint="Buscar productos..."
-    android:padding="12dp"
-    android:textColor="#000"
-    android:textColorHint="#999"
-    android:textSize="16sp"
-    android:singleLine="true"
-    android:imeOptions="actionSearch"/>
-
-    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filterContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        app:boxStrokeColor="@color/white"
-        app:hintTextColor="#666"
-        app:boxCornerRadiusTopStart="8dp"
-        app:boxCornerRadiusTopEnd="8dp"
-        app:boxCornerRadiusBottomStart="8dp"
-        app:boxCornerRadiusBottomEnd="8dp"
-        app:boxBackgroundColor="@android:color/white">
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:background="#F8F8F8"
+        android:elevation="2dp">
 
-        <AutoCompleteTextView
-            android:id="@+id/spinnerFiltro"
+        <EditText
+            android:id="@+id/etFiltro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Filtrar por..."
-            android:inputType="none"
+            android:background="@drawable/rounded_edittext_background"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:hint="Buscar productos..."
             android:padding="12dp"
-            android:textSize="16sp"/>
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+            android:textColor="#000"
+            android:textColorHint="#999"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:boxStrokeColor="@color/white"
+            app:hintTextColor="#666"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxBackgroundColor="@android:color/white">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinnerFiltro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Filtrar por..."
+                android:inputType="none"
+                android:padding="12dp"
+                android:textSize="16sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNuevoProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Producto"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        app:backgroundTint="#FF6709" app:cornerRadius="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProductos"
@@ -56,7 +74,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingHorizontal="8dp" android:scrollbars="none"/>
+        android:paddingHorizontal="8dp"
+        android:scrollbars="none"/>
 
     <LinearLayout
         android:id="@+id/paginacionContainer"
@@ -66,18 +85,21 @@
         android:orientation="horizontal"
         android:paddingVertical="8dp"
         android:paddingHorizontal="16dp"
-        android:background="#FAFAFA" android:elevation="2dp"> <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAnterior"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:icon="@drawable/ic_arrow_back"
-        android:text="Anterior"
-        android:textAllCaps="false"
-        app:iconPadding="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#555"
-        app:cornerRadius="8dp"/>
+        android:background="#F8F8F8"
+        android:elevation="2dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAnterior"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:icon="@drawable/ic_arrow_back"
+            android:text="Anterior"
+            android:textAllCaps="false"
+            app:iconPadding="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#555"
+            app:cornerRadius="8dp"/>
 
         <TextView
             android:id="@+id/tvPagina"

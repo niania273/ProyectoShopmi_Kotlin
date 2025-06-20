@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -24,7 +25,6 @@ import com.proyecto.proyectoshopmi.data.adapter.ProductoAdapter
 import com.proyecto.proyectoshopmi.data.model.request.ProductoDetalleRequest
 import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import com.proyecto.proyectoshopmi.data.service.ProductoService
-import com.proyecto.proyectoshopmi.fragment.pedido.CarritoComprasFragment
 import com.proyecto.proyectoshopmi.helper.SessionManager
 
 class ListarProductosFragment : Fragment() {
@@ -37,13 +37,16 @@ class ListarProductosFragment : Fragment() {
     private lateinit var btnSiguiente: MaterialButton
     private lateinit var tvPagina: TextView
     private lateinit var btnAgregarCarrito: Button
-
+    private lateinit var btnActualizar: Button
+    private lateinit var btnEliminar: Button
     private var todosLosProductos: List<ProductoResponse> = emptyList()
     private var productosFiltrados: List<ProductoResponse> = emptyList()
 
     private val productosPorPagina = 6
     private var paginaActual = 1
     private var totalPaginas = 1
+    private lateinit var btnNuevoProducto: MaterialButton
+    private lateinit var filterContainer: LinearLayout
 
     private val productoService = ProductoService()
     private lateinit var sessionManager: SessionManager
@@ -57,7 +60,6 @@ class ListarProductosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         etFiltro = view.findViewById(R.id.etFiltro)
         spinnerFiltro = view.findViewById(R.id.spinnerFiltro)
         recyclerView = view.findViewById(R.id.recyclerProductos)
@@ -65,32 +67,37 @@ class ListarProductosFragment : Fragment() {
         btnSiguiente = view.findViewById(R.id.btnSiguiente)
         tvPagina = view.findViewById(R.id.tvPagina)
 
+        btnNuevoProducto = view.findViewById(R.id.btnNuevoProducto)
+        filterContainer = view.findViewById(R.id.filterContainer)
+
         btnAgregarCarrito = view.findViewById(R.id.btnAgregarCarrito)
-        sessionManager = SessionManager(requireContext())
-        val usuario = sessionManager.obtenerUsuario()
-
-        if (usuario != null) {
-            if (usuario.rolId == 1){
-                btnAgregarCarrito.visibility = View.VISIBLE
-                btnAgregarCarrito.setOnClickListener {
-                    requireActivity().supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.content_frame, CarritoComprasFragment())
-                        .addToBackStack(null)
-                        .commit()
-                }
-            } else if(usuario.rolId == 2 || usuario.rolId == 3){
-
-            }
-        }
+        btnActualizar = view.findViewById(R.id.item_btnActualizar)
+        btnEliminar = view.findViewById(R.id.item_btnEliminar)
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        sessionManager = SessionManager(requireContext())
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
         recyclerView.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, true))
         recyclerView.setHasFixedSize(true)
 
-        sessionManager = SessionManager(requireContext())
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (dy > 0) {
+                    btnNuevoProducto.visibility = View.GONE
+                } else if (dy < 0) {
+                    if (firstVisibleItemPosition == 0 && recyclerView.canScrollVertically(-1).not()) {
+                        btnNuevoProducto.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
 
         val opcionesFiltro = listOf("Todo", "Disponibles", "Precio ↑", "Precio ↓")
         val adapterFiltro = ArrayAdapter(requireContext(), R.layout.dropdown_menu_popup_item, opcionesFiltro)
@@ -105,9 +112,28 @@ class ListarProductosFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        btnNuevoProducto.setOnClickListener {
+            Toast.makeText(requireContext(), "Crear Nuevo Producto", Toast.LENGTH_SHORT).show()
+             requireActivity().supportFragmentManager
+                 .beginTransaction()
+                 .replace(R.id.content_frame, RegistrarProductoFragment())
+                 .addToBackStack(null)
+                 .commit()
+        }
+        val usuario = sessionManager.obtenerUsuario()
+        if (usuario != null) {
+            if (usuario.rolId == 2 || usuario.rolId == 3) {
+                btnNuevoProducto.visibility = View.VISIBLE
+            } else {
+                btnNuevoProducto.visibility = View.GONE
+            }
+        } else {
+            btnNuevoProducto.visibility = View.GONE
+        }
+
         adapter = ProductoAdapter(
             productos = emptyList(),
-            onItemClicked = { producto ->
+            onAddToCartClicked = { producto ->
                 val productoSeleccionado = ProductoDetalleRequest(
                     codProducto = producto.codProducto,
                     nomProducto = producto.nomProducto,
@@ -126,8 +152,47 @@ class ListarProductosFragment : Fragment() {
                     Toast.makeText(requireContext(), "${producto.nomProducto} agregado al carrito", Toast.LENGTH_SHORT).show()
                 }
             },
-            onActualizarClicked = null,
-            onDesactivarClicked = null
+            onViewProductClicked = { producto ->
+                val bundle = Bundle().apply {
+                    putInt("codProducto", producto.codProducto)
+                    putString("nomProducto", producto.nomProducto)
+                    putString("imgProducto", producto.imgProducto)
+                    putDouble("preUni", producto.preUni ?: 0.0)
+                    putInt("stock", producto.stock ?: 0)
+                    putString("descripcion", producto.descripcion)
+                    putString("nombreMarca", producto.nombreMarca)
+                }
+                val fragment = VerProductoFragment().apply { arguments = bundle }
+
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onActualizarClicked = { producto ->
+                val bundle = Bundle().apply {
+                    putInt("codProducto", producto.codProducto ?: 0)
+                    putString("nomProducto", producto.nomProducto)
+                    putString("imgProducto", producto.imgProducto)
+                    putDouble("preUni", producto.preUni ?: 0.0)
+                    putInt("stock", producto.stock ?: 0)
+                    putString("descripcion", producto.descripcion)
+                    putString("nombreMarca", producto.nombreMarca)
+                }
+
+                val fragment = ActualizarProductoFragment().apply { arguments = bundle }
+
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onDesactivarClicked = { producto ->
+                Toast.makeText(requireContext(), "Eliminar ${producto.nomProducto}", Toast.LENGTH_SHORT).show()
+                //productoService.(producto.codProducto, onSuccess = { ... }, onError = { ... })
+            }
         )
         recyclerView.adapter = adapter
 

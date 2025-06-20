@@ -1,63 +1,90 @@
 package com.proyecto.proyectoshopmi.fragment.producto
 
 import android.os.Bundle
+import android.util.Log // Import for Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast // For showing a toast if data is missing
 import com.google.android.material.button.MaterialButton
 import com.proyecto.proyectoshopmi.R
-import androidx.navigation.fragment.findNavController
+// No need for ProductoResponse import here if not receiving the object
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ActualizarProductoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ActualizarProductoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    // Tag for logging
+    private val TAG = "ActualizarProductoFrag"
+
+    // Properties to hold the received product data
+    private var codProducto: Int? = null
+    private var nomProducto: String? = null
+    private var imgProducto: String? = null
+    private var preUni: Double? = null
+    private var stock: Int? = null
+    private var descripcion: String? = null
+    private var nombreMarca: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Retrieve the individual arguments here
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            codProducto = it.getInt("codProducto", 0) // Default to 0 if not found
+            nomProducto = it.getString("nomProducto")
+            imgProducto = it.getString("imgProducto")
+            preUni = it.getDouble("preUni", 0.0) // Default to 0.0
+            stock = it.getInt("stock", 0)
+            descripcion = it.getString("descripcion")
+            nombreMarca = it.getString("nombreMarca")
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_actualizar_producto, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnActualizar = view.findViewById<MaterialButton>(R.id.btnActualizar)
-        btnActualizar.setOnClickListener {
-            findNavController().navigate(R.id.action_listaProductoFragment_to_actualizarProductoFragment)
+        if (codProducto != null && nomProducto != null) {
+            Log.d(TAG, "Received Product for Update (Individual Fields):")
+            Log.d(TAG, "  CodProducto: $codProducto")
+            Log.d(TAG, "  NomProducto: $nomProducto")
+            Log.d(TAG, "  ImgProducto: $imgProducto")
+            Log.d(TAG, "  PreUni: $preUni")
+            Log.d(TAG, "  Stock: $stock")
+            Log.d(TAG, "  Descripcion: $descripcion")
+            Log.d(TAG, "  NombreMarca: $nombreMarca")
+
+        } else {
+            Log.e(TAG, "No essential product data received in ActualizarProductoFragment!")
+            Toast.makeText(requireContext(), "Error al cargar datos del producto.", Toast.LENGTH_LONG).show()
         }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ActualizarProductoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ActualizarProductoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        fun newInstance(
+            codProducto: Int,
+            nomProducto: String,
+            imgProducto: String,
+            preUni: Double,
+            stock: Int,
+            descripcion: String,
+            nombreMarca: String
+        ) = ActualizarProductoFragment().apply {
+            arguments = Bundle().apply {
+                putInt("codProducto", codProducto)
+                putString("nomProducto", nomProducto)
+                putString("imgProducto", imgProducto)
+                putDouble("preUni", preUni)
+                putInt("stock", stock)
+                putString("descripcion", descripcion)
+                putString("nombreMarca", nombreMarca)
             }
+        }
     }
 }
