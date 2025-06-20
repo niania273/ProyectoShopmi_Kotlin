@@ -96,17 +96,12 @@ class HomeFragment : Fragment() {
 
         productoService.obtenerTop5MasBaratos(
             onSuccess = { productos ->
-                // Si no necesitas que sean clickeables, pasa una lambda vacía para onItemClicked
-                // y null para los callbacks opcionales (onActualizarClicked, onDesactivarClicked)
                 adapter = ProductoAdapter(
                     productos = productos,
                     onItemClicked = { producto ->
-                        // Aquí podrías, por ejemplo, navegar a la pantalla de detalles del producto
-                        // o no hacer nada si no quieres funcionalidad de clic en esta vista.
-                        // Toast.makeText(context, "Clic en ${producto.nomProducto}", Toast.LENGTH_SHORT).show()
                     },
-                    onActualizarClicked = null, // No necesitas esta acción aquí
-                    onDesactivarClicked = null  // No necesitas esta acción aquí
+                    onActualizarClicked = null,
+                    onDesactivarClicked = null
                 )
                 recyclerView.adapter = adapter
                 productosSize = productos.size
