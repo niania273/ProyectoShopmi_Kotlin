@@ -4,6 +4,7 @@ import com.proyecto.proyectoshopmi.data.client.RetrofitClient
 import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Callback
@@ -68,7 +69,7 @@ class ProductoService {
     //Productos por categoría
     fun registrarProducto(
         imageFile: File?,
-        productoData: Map<String, String>,
+        productoData: MutableMap<String, RequestBody>,
         onSuccess: (String) -> Unit,
         onError: (String) -> Unit
     ) {
@@ -96,4 +97,8 @@ class ProductoService {
         })
     }
 
+
+
 }
+
+private fun ProductoService.selectCategorias(onSuccess: Any, onError: Any) {}
