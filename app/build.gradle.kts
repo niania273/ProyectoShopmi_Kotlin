@@ -63,5 +63,7 @@ dependencies {
     implementation("com.github.f0ris.sweetalert:library:1.5.6")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     findKaptConfiguration("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 
 }

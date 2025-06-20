@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto.proyectoshopmi.R
@@ -81,15 +82,39 @@ class HomeFragment : Fragment() {
         }
 
         // Cargar productos
+//        productoService.obtenerTop5MasBaratos(
+//            onSuccess = { productos ->
+//                adapter = ProductoAdapter(productos){}
+//                recyclerView.adapter = adapter
+//                productosSize = productos.size
+//                handler.postDelayed(scrollRunnable, intervalo)
+//            },
+//            onError = { errorMsg ->
+//                // Aquí puedes mostrar un Toast o Snackbar
+//            }
+//        )
+
         productoService.obtenerTop5MasBaratos(
             onSuccess = { productos ->
-                adapter = ProductoAdapter(productos){}
+                // Si no necesitas que sean clickeables, pasa una lambda vacía para onItemClicked
+                // y null para los callbacks opcionales (onActualizarClicked, onDesactivarClicked)
+                adapter = ProductoAdapter(
+                    productos = productos,
+                    onItemClicked = { producto ->
+                        // Aquí podrías, por ejemplo, navegar a la pantalla de detalles del producto
+                        // o no hacer nada si no quieres funcionalidad de clic en esta vista.
+                        // Toast.makeText(context, "Clic en ${producto.nomProducto}", Toast.LENGTH_SHORT).show()
+                    },
+                    onActualizarClicked = null, // No necesitas esta acción aquí
+                    onDesactivarClicked = null  // No necesitas esta acción aquí
+                )
                 recyclerView.adapter = adapter
                 productosSize = productos.size
                 handler.postDelayed(scrollRunnable, intervalo)
             },
             onError = { errorMsg ->
                 // Aquí puedes mostrar un Toast o Snackbar
+                Toast.makeText(context, "Error: $errorMsg", Toast.LENGTH_SHORT).show()
             }
         )
     }

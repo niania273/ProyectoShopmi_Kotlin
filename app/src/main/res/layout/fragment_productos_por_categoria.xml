@@ -1,74 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contenedorProductos"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listaProductoFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp" android:paddingTop="16dp"
+    android:paddingBottom="8dp"
+    android:background="#F8F8F8" android:elevation="2dp"> <EditText
+    android:id="@+id/etFiltro"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_edittext_background"
+    android:drawableStart="@drawable/ic_search"
+    android:drawablePadding="8dp"
+    android:hint="Buscar productos..."
+    android:padding="12dp"
+    android:textColor="#000"
+    android:textColorHint="#999"
+    android:textSize="16sp"
+    android:singleLine="true"
+    android:imeOptions="actionSearch"/>
 
-    <EditText
-        android:id="@+id/etFiltro"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@color/white"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:hint="Buscar productos..."
-        android:padding="12dp"
-        android:textColor="#000"
-        android:textColorHint="#999" />
+        android:layout_marginTop="8dp" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="#666"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxBackgroundColor="@android:color/white">
 
-    <Spinner
-        android:id="@+id/spinnerFiltro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:padding="8dp" />
-
-    <!-- RecyclerView con productos -->
+        <AutoCompleteTextView
+            android:id="@+id/spinnerFiltro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Filtrar por..."
+            android:inputType="none"
+            android:padding="12dp"
+            android:textSize="16sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProductos"
         android:layout_width="match_parent"
-        android:layout_height="193dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingBottom="16dp"
-        android:scrollbars="vertical" />
+        android:paddingHorizontal="8dp" android:scrollbars="none"/>
 
     <LinearLayout
         android:id="@+id/paginacionContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingVertical="8dp">
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
+        android:background="#FAFAFA" android:elevation="2dp"> <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAnterior"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:icon="@drawable/ic_arrow_back"
+        android:text="Anterior"
+        android:textAllCaps="false"
+        app:iconPadding="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#555"
+        app:cornerRadius="8dp"/>
 
-        <Button
-            android:id="@+id/btnAnterior"
+        <TextView
+            android:id="@+id/tvPagina"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="◄"
-            android:textSize="16sp" />
+            android:text="1/1"
+            android:textSize="16sp"
+            android:textColor="#444"
+            android:layout_marginHorizontal="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSiguiente"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:icon="@drawable/ic_arrow_forward"
+            android:text="Siguiente"
+            android:textAllCaps="false"
+            app:iconPadding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="►"
-            android:textSize="16sp" />
+            app:strokeColor="#DDDDDD"
+            android:textColor="#555"
+            app:cornerRadius="8dp"/>
     </LinearLayout>
 </LinearLayout>
