@@ -52,21 +52,22 @@
                 android:hint="Filtrar por..."
                 android:inputType="none"
                 android:padding="12dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp"/>
         </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnNuevoProducto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nuevo Producto"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
-        app:backgroundTint="#FF6709" app:cornerRadius="8dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNuevoProducto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Producto"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:backgroundTint="#FF6709"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProductos"
