@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.service.ProductoService
@@ -161,11 +162,21 @@ class RegistrarProductoFragment : Fragment() {
             imageFile = selectedImageFile,
             productoData = productoData,
             onSuccess = { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-                clearForm()
+                SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("¡Éxito!")
+                    .setContentText(message)
+                    .setConfirmText("Aceptar")
+                    .setConfirmClickListener { sDialog ->
+                        sDialog.dismissWithAnimation()
+                        clearForm()
+                    }
+                    .show()
             },
             onError = { errorMessage ->
-                Toast.makeText(requireContext(), "Error al registrar producto: $errorMessage", Toast.LENGTH_LONG).show()
+                SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("¡Error!")
+                    .setContentText("Error al registrar producto: $errorMessage")
+                    .show()
             }
         )
     }
