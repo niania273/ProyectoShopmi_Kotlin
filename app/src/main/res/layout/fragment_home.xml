@@ -122,9 +122,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- RecyclerView -->
+            <!-- RecyclerView para mostrar productos, vinculado con item_producto_home.xml -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewProductos"
+                android:id="@+id/recyclerViewProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

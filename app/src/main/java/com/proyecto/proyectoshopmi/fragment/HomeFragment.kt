@@ -52,13 +52,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+    } // El RecyclerView para los productos se infla aquí desde fragment_home.xml
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Inicializar vistas
-        recyclerView = view.findViewById(R.id.recyclerViewProductos)
+        recyclerView = view.findViewById(R.id.recyclerViewProducts) // Utiliza el RecyclerView de item_producto_home.xml
         loginButton = view.findViewById(R.id.loginButton)
         registerButton = view.findViewById(R.id.registerButton)
 
@@ -84,6 +84,7 @@ class HomeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
 
         productoService.obtenerTop5MasBaratos(
             onSuccess = { productos ->

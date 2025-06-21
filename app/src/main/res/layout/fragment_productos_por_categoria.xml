@@ -76,7 +76,7 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingHorizontal="8dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
 
     <LinearLayout
         android:id="@+id/paginacionContainer"
