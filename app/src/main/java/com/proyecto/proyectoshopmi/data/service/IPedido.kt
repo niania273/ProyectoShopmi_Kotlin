@@ -1,7 +1,9 @@
 package com.proyecto.proyectoshopmi.data.service
 
+import com.proyecto.proyectoshopmi.data.model.request.PedidoDetalleRequest
 import com.proyecto.proyectoshopmi.data.model.response.PedidoDetalleResponse
 import com.proyecto.proyectoshopmi.data.model.response.PedidoResponse
+import com.proyecto.proyectoshopmi.data.model.response.RegisterResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -19,7 +21,7 @@ interface IPedido {
     fun obtenerPedido(@Path("codPedido") codPedido: Int): PedidoDetalleResponse
 
     @POST("pedidos/registrarPedido")
-    fun registrarPedido(@Body pedidoDetalleResponse: PedidoDetalleResponse): Call<String>
+    fun registrarPedido(@Body pedidoDetalleRequest: PedidoDetalleRequest): Call<RegisterResponse>
 
     @PUT("pedidos/actualizarPedido/{codPedido}")
     fun actualizarPedido(@Path("codPedido") codPedido: Int, @Body codEstado: Int): Call<String>

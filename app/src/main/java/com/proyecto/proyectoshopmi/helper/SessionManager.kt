@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.proyecto.proyectoshopmi.data.model.response.UsuarioResponse
 import androidx.core.content.edit
-import com.proyecto.proyectoshopmi.data.model.request.ProductoDetalleRequest
+import com.proyecto.proyectoshopmi.data.model.response.ProductoCarritoResponse
 
 class SessionManager(context: Context) {
     private val prefs: SharedPreferences =
@@ -35,22 +35,22 @@ class SessionManager(context: Context) {
         }
     }
 
-    fun guardarCarrito(productos: List<ProductoDetalleRequest>) {
+    fun guardarCarrito(productos: List<ProductoCarritoResponse>) {
         val carritoJson = Gson().toJson(productos)
         prefs.edit().putString("cartItemList", carritoJson).apply()
     }
 
-    fun obtenerCarrito(): MutableList<ProductoDetalleRequest> {
+    fun obtenerCarrito(): MutableList<ProductoCarritoResponse> {
         val carritoJson = prefs.getString("cartItemList", null)
         return if (!carritoJson.isNullOrEmpty()) {
-            val type = object : com.google.gson.reflect.TypeToken<List<ProductoDetalleRequest>>() {}.type
+            val type = object : com.google.gson.reflect.TypeToken<List<ProductoCarritoResponse>>() {}.type
             Gson().fromJson(carritoJson, type)
         } else {
             mutableListOf()
         }
     }
 
-    fun agregarProductoAlCarrito(producto: ProductoDetalleRequest) {
+    fun agregarProductoAlCarrito(producto: ProductoCarritoResponse) {
         val productos = obtenerCarrito().toMutableList()
         val index = productos.indexOfFirst { it.codProducto == producto.codProducto }
 

@@ -65,7 +65,7 @@ class ProductoService {
         })
     }
 
-    //Productos por categoría
+    //Registrar producto
     fun registrarProducto(
         imageFile: File?,
         productoData: MutableMap<String, RequestBody>,
@@ -96,8 +96,10 @@ class ProductoService {
         })
     }
 
-
+    fun cambiarEstadoProducto(
+        codProducto: Int
+    ){
+        api.cambiarEstadoProducto(codProducto)
+    }
 
 }
-
-private fun ProductoService.selectCategorias(onSuccess: Any, onError: Any) {}

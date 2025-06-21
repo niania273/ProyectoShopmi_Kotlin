@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.adapter.ProductoAdapter
-import com.proyecto.proyectoshopmi.data.model.request.ProductoDetalleRequest
+import com.proyecto.proyectoshopmi.data.model.response.ProductoCarritoResponse
 import com.proyecto.proyectoshopmi.data.model.response.ProductoResponse
 import com.proyecto.proyectoshopmi.data.service.ProductoService
 import com.proyecto.proyectoshopmi.helper.SessionManager
@@ -36,17 +35,15 @@ class ListarProductosFragment : Fragment() {
     private lateinit var btnAnterior: MaterialButton
     private lateinit var btnSiguiente: MaterialButton
     private lateinit var tvPagina: TextView
-    private lateinit var btnAgregarCarrito: Button
-    private lateinit var btnActualizar: Button
-    private lateinit var btnEliminar: Button
+    private lateinit var btnNuevoProducto: MaterialButton
+    private lateinit var filterContainer: LinearLayout
+
     private var todosLosProductos: List<ProductoResponse> = emptyList()
     private var productosFiltrados: List<ProductoResponse> = emptyList()
 
     private val productosPorPagina = 6
     private var paginaActual = 1
     private var totalPaginas = 1
-    private lateinit var btnNuevoProducto: MaterialButton
-    private lateinit var filterContainer: LinearLayout
 
     private val productoService = ProductoService()
     private lateinit var sessionManager: SessionManager
@@ -60,41 +57,33 @@ class ListarProductosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         etFiltro = view.findViewById(R.id.etFiltro)
         spinnerFiltro = view.findViewById(R.id.spinnerFiltro)
         recyclerView = view.findViewById(R.id.recyclerProductos)
         btnAnterior = view.findViewById(R.id.btnAnterior)
         btnSiguiente = view.findViewById(R.id.btnSiguiente)
         tvPagina = view.findViewById(R.id.tvPagina)
-
         btnNuevoProducto = view.findViewById(R.id.btnNuevoProducto)
         filterContainer = view.findViewById(R.id.filterContainer)
 
-        btnAgregarCarrito = view.findViewById(R.id.btnAgregarCarrito)
-        btnActualizar = view.findViewById(R.id.item_btnActualizar)
-        btnEliminar = view.findViewById(R.id.item_btnEliminar)
+        sessionManager = SessionManager(requireContext())
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-
-        sessionManager = SessionManager(requireContext())
+        recyclerView.setHasFixedSize(true)
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_spacing)
         recyclerView.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, true))
-        recyclerView.setHasFixedSize(true)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
                 val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-                if (dy > 0) {
-                    btnNuevoProducto.visibility = View.GONE
-                } else if (dy < 0) {
-                    if (firstVisibleItemPosition == 0 && recyclerView.canScrollVertically(-1).not()) {
-                        btnNuevoProducto.visibility = View.VISIBLE
-                    }
+                btnNuevoProducto.visibility = when {
+                    dy > 0 -> View.GONE
+                    dy < 0 && firstVisibleItemPosition == 0 && !recyclerView.canScrollVertically(-1) -> View.VISIBLE
+                    else -> btnNuevoProducto.visibility
                 }
             }
         })
@@ -112,44 +101,39 @@ class ListarProductosFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        btnNuevoProducto.setOnClickListener {
-            Toast.makeText(requireContext(), "Crear Nuevo Producto", Toast.LENGTH_SHORT).show()
-             requireActivity().supportFragmentManager
-                 .beginTransaction()
-                 .replace(R.id.content_frame, RegistrarProductoFragment())
-                 .addToBackStack(null)
-                 .commit()
-        }
         val usuario = sessionManager.obtenerUsuario()
-        if (usuario != null) {
-            if (usuario.rolId == 2 || usuario.rolId == 3) {
-                btnNuevoProducto.visibility = View.VISIBLE
-            } else {
-                btnNuevoProducto.visibility = View.GONE
-            }
-        } else {
-            btnNuevoProducto.visibility = View.GONE
+        btnNuevoProducto.visibility = if (usuario?.rolId == 2 || usuario?.rolId == 3) View.VISIBLE else View.GONE
+
+        btnNuevoProducto.setOnClickListener {
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content_frame, RegistrarProductoFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         adapter = ProductoAdapter(
             productos = emptyList(),
-            onAddToCartClicked = { producto ->
-                val productoSeleccionado = ProductoDetalleRequest(
-                    codProducto = producto.codProducto,
-                    nomProducto = producto.nomProducto,
-                    imgProducto = producto.imgProducto,
-                    preUni = producto.preUni,
-                    stock = producto.stock,
-                    cantidad = 1,
+            onAddToCartClicked = { productoClick ->
+                val productoSeleccionado = ProductoCarritoResponse(
+                        codProducto = productoClick.codProducto,
+                        nomProducto = productoClick.nomProducto,
+                        imgProducto = productoClick.imgProducto,
+                        preUni = productoClick.preUni,
+                        stock = productoClick.stock,
+                        cantidad = 1,
+                        nomMarca = productoClick.nombreMarca,
+                        nomCategoria = productoClick.nomCategoria
                 )
-
-                val yaExiste = sessionManager.obtenerCarrito().any { it.codProducto == producto.codProducto }
+                val yaExiste = sessionManager.obtenerCarrito().any {
+                    it.codProducto == productoClick.codProducto
+                }
 
                 if (yaExiste) {
-                    Toast.makeText(requireContext(), "${producto.nomProducto} ya está en el carrito", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${productoClick.nomProducto} ya está en el carrito", Toast.LENGTH_SHORT).show()
                 } else {
                     sessionManager.agregarProductoAlCarrito(productoSeleccionado)
-                    Toast.makeText(requireContext(), "${producto.nomProducto} agregado al carrito", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${productoClick.nomProducto} agregado al carrito", Toast.LENGTH_SHORT).show()
                 }
             },
             onViewProductClicked = { producto ->
@@ -162,6 +146,7 @@ class ListarProductosFragment : Fragment() {
                     putString("descripcion", producto.descripcion)
                     putString("nombreMarca", producto.nombreMarca)
                 }
+
                 val fragment = VerProductoFragment().apply { arguments = bundle }
 
                 requireActivity().supportFragmentManager
@@ -191,7 +176,7 @@ class ListarProductosFragment : Fragment() {
             },
             onDesactivarClicked = { producto ->
                 Toast.makeText(requireContext(), "Eliminar ${producto.nomProducto}", Toast.LENGTH_SHORT).show()
-                //productoService.(producto.codProducto, onSuccess = { ... }, onError = { ... })
+                productoService.cambiarEstadoProducto(producto.codProducto)
             }
         )
         recyclerView.adapter = adapter
@@ -242,11 +227,7 @@ class ListarProductosFragment : Fragment() {
         }
 
         totalPaginas = (productosFiltrados.size + productosPorPagina - 1) / productosPorPagina
-        if (totalPaginas == 0 && productosFiltrados.isEmpty()) {
-            totalPaginas = 1
-        } else if (productosFiltrados.isEmpty()) {
-            totalPaginas = 1
-        }
+        if (productosFiltrados.isEmpty()) totalPaginas = 1
 
         paginaActual = 1
         mostrarPagina(paginaActual)
@@ -268,6 +249,7 @@ class ListarProductosFragment : Fragment() {
         } else {
             recyclerView.clearAnimation()
         }
+
         actualizarBotonesPaginacion()
     }
 

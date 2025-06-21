@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proyecto.proyectoshopmi.R
 import com.proyecto.proyectoshopmi.data.adapter.ProductoAdapter
-import com.proyecto.proyectoshopmi.data.model.request.ProductoDetalleRequest
+import com.proyecto.proyectoshopmi.data.model.response.ProductoCarritoResponse
 import com.proyecto.proyectoshopmi.data.service.ProductoService
 import com.proyecto.proyectoshopmi.fragment.autenticacion.LoginFragment
 import com.proyecto.proyectoshopmi.fragment.autenticacion.RegisterFragment
@@ -91,13 +91,15 @@ class HomeFragment : Fragment() {
                 adapter = ProductoAdapter(
                     productos = productos,
                     onAddToCartClicked = { producto ->
-                        val productoSeleccionado = ProductoDetalleRequest(
+                        val productoSeleccionado = ProductoCarritoResponse(
                             codProducto = producto.codProducto,
                             nomProducto = producto.nomProducto,
                             imgProducto = producto.imgProducto,
                             preUni = producto.preUni,
                             stock = producto.stock,
                             cantidad = 1,
+                            nomMarca = producto.nombreMarca,
+                            nomCategoria = producto.nomCategoria
                         )
 
                         val sessionManager = SessionManager(requireContext())

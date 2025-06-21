@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/containerCarrito"
     android:layout_width="match_parent"
@@ -7,25 +8,18 @@
     tools:context=".fragment.pedido.CarritoComprasFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="140dp"
-        android:paddingTop="16dp"
-        android:paddingHorizontal="16dp">
-
-    <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/ic_cart"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_cart" />
+        android:padding="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"> <ImageView
+        android:id="@+id/ic_cart"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_cart" />
 
         <TextView
             android:id="@+id/tv_mi_carrito"
@@ -38,117 +32,164 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+        android:id="@+id/layoutResumen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_resumen_carrito"
+                app:tint="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resumen del Pedido"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/lblFechaEntrega"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Entrega:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/txtFechaEntrega"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rounded_light_gray"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:drawableEnd="@drawable/ic_calendar_icon"
+                android:focusable="false"
+                android:hint="Seleccionar fecha"
+                android:inputType="none"
+                android:longClickable="false"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/lblTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/txtTotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rounded_light_gray"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="S/. 0.00"
+                android:longClickable="false"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRegistrarPedido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/main_green_color"
+            android:text="Registrar Pedido"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/headerLayout"
+        android:layout_above="@+id/layoutResumen"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCarrito"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:overScrollMode="ifContentScrolls"
         android:paddingBottom="8dp" />
-</LinearLayout>
+    </LinearLayout>
 
-    <!-- Vista vacía -->
-<LinearLayout
-android:id="@+id/layoutVacio"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:gravity="center"
-android:background="@android:color/white"
-android:visibility="gone"
-android:padding="24dp">
-
-<TextView
-    android:id="@+id/tvSinProductos"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Ningún producto seleccionado"
-    android:textSize="18sp"
-    android:textColor="@color/black"
-    android:layout_marginBottom="16dp" />
-
-<Button
-    android:id="@+id/btnEmpezarComprar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Empezar a comprar"
-    android:backgroundTint="@color/main_green_color"
-    android:textColor="@android:color/white" />
-</LinearLayout>
-
-    <!-- Resumen del pedido fijo abajo -->
-<LinearLayout
-android:id="@+id/layoutResumen"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_gravity="bottom"
-android:background="@android:color/white"
-android:elevation="8dp"
-android:orientation="vertical"
-android:padding="16dp"
-android:visibility="gone">
-
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Resumen del Pedido"
-    android:textSize="18sp"
-    android:textStyle="bold"
-    android:textColor="@color/black"
-    android:layout_marginBottom="12dp" />
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_marginBottom="8dp">
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/carritoVacio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/headerLayout"
+        android:layout_above="@+id/layoutResumen"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        android:padding="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"> <TextView
+        android:id="@+id/txtMensajeCarritoVacio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha de Entrega:"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/tvFechaEntrega"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jun 10, 2025"
+        android:text="No hay productos seleccionados"
+        android:textSize="18sp"
         android:textColor="@color/black"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"/>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_marginBottom="16dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total:"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/tvTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="S/. 1456.99"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
-</LinearLayout>
-
-<Button
-    android:id="@+id/btnRegistrarPedido"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Registrar Pedido"
-    android:backgroundTint="@color/main_green_color"
-    android:textColor="@android:color/white" />
-</LinearLayout>
-
-    </FrameLayout>
+        <Button
+            android:id="@+id/btnComenzarComprar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comenzar a comprar"
+            android:backgroundTint="#FF833E"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</RelativeLayout>
