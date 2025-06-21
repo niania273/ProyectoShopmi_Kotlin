@@ -37,6 +37,15 @@
     </fragment>
 
     <fragment
+        android:id="@+id/registrarProductoFragment"
+        android:name="com.proyecto.proyectoshopmi.fragment.producto.RegistrarProductoFragment"
+        android:label="RegistrarProducto">
+        <action
+            android:id="@+id/action_registrarProductoFragment_to_productoFragment"
+            app:destination="@id/listaProductoFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/actualizarProductoFragment"
         android:name="com.proyecto.proyectoshopmi.fragment.producto.ActualizarProductoFragment"
         android:label="ActualizarProducto" />
