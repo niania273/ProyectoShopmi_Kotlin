@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
     </application>
-lslasa
+
     <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
