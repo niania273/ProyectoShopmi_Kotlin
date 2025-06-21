@@ -202,7 +202,7 @@
                     android:layout_width="265dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:backgroundTint="#26F26236"
+                    android:backgroundTint="#26E65F37"
                     android:text="Actualizar"
                     android:textColor="@color/black" />
 
