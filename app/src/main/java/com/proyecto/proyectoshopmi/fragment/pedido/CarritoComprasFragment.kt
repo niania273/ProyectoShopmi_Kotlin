@@ -5,18 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.proyecto.proyectoshopmi.R
+import com.proyecto.proyectoshopmi.data.adapter.CarritoAdapter
+import com.proyecto.proyectoshopmi.data.model.response.ProductoPedidoResponse
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CarritoComprasFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class CarritoComprasFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -37,6 +37,38 @@ class CarritoComprasFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_carrito_compras, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val recycler = view.findViewById<RecyclerView>(R.id.recyclerCarrito)
+        recycler.layoutManager = LinearLayoutManager(requireContext())
+
+        val listaDePrueba = listOf(
+            ProductoPedidoResponse(
+                imgProducto = "http://10.0.2.2:5010/imagenes/productos/audio10.jpg",
+                nomProducto = "Mouse Inalámbrico",
+                preUni = 59.90,
+                cantidad = 1
+            ),
+            ProductoPedidoResponse(
+                imgProducto = "http://10.0.2.2:5010/imagenes/productos/audio1.jpg",
+                nomProducto = "Teclado Mecánico",
+                preUni = 199.90,
+                cantidad = 2
+            ),
+            ProductoPedidoResponse(
+                imgProducto = "http://10.0.2.2:5010/imagenes/productos/audio2.jpg",
+                nomProducto = "Monitor 24''",
+                preUni = 899.00,
+                cantidad = 1
+            )
+        )
+
+        val adapter = CarritoAdapter(listaDePrueba)
+        recycler.adapter = adapter
+    }
+
 
     companion object {
         /**

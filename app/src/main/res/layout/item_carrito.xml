@@ -90,34 +90,50 @@
         <!-- Contador de cantidad -->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
-            <ImageButton
-                android:id="@+id/btnMenos"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_botones_cantidad"
-                android:src="@drawable/ic_minus"
-                android:contentDescription="Disminuir cantidad" />
-
-            <TextView
-                android:id="@+id/txtCantidad"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="16sp"
-                android:paddingHorizontal="8dp"
-                android:textColor="#000000" />
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/btnMas"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_botones_cantidad"
-                android:src="@drawable/ic_plus"
-                android:contentDescription="Aumentar cantidad" />
+                <ImageButton
+                    android:id="@+id/btnMenos"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_botones_cantidad"
+                    android:src="@drawable/ic_minus"
+                    android:contentDescription="Disminuir cantidad" />
+
+                <TextView
+                    android:id="@+id/txtCantidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="8dp"
+                    android:textColor="#000000" />
+
+                <ImageButton
+                    android:id="@+id/btnMas"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_botones_cantidad"
+                    android:src="@drawable/ic_plus"
+                    android:contentDescription="Aumentar cantidad" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnEliminarItem"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/outline_delete_24"
+                android:background="#FF0000"
+                android:layout_marginStart="8dp"
+                android:contentDescription="Eliminar item del carrito" />
         </LinearLayout>
 
     </LinearLayout>
