@@ -78,7 +78,7 @@ class ActualizarProductoFragment : Fragment() {
         arguments?.let {
             codProducto = it.getInt("codProducto", 0)
             nomProducto = it.getString("nomProducto", "") ?: ""
-            imgProducto = it.getString("imgProducto", "") ?: "" // Usar la URL de la imagen
+            imgProducto = it.getString("imgProducto", "") ?: ""
             preUni = it.getDouble("preUni", 0.0)
             stock = it.getInt("stock", 0)
             descripcion = it.getString("descripcion", "") ?: ""
@@ -160,12 +160,18 @@ class ActualizarProductoFragment : Fragment() {
                 val adapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    categorias.map { it.name } // Mapea los objetos a solo sus nombres para el adaptador
+                    categorias.map { it.name }
                 )
                 binding.actvCategoria.setAdapter(adapter)
 
+                // ESTO ES CLAVE: Establece el ID si el nombre de categoría ya existe
+                val currentCategory = categorias.find { it.name == nombreCategoria }
+                currentCategory?.let {
+                    binding.actvCategoria.setText(it.name, false)
+                    selectedCategoriaId = it.value // Establece el ID aquí
+                }
+
                 binding.actvCategoria.setOnItemClickListener { parent, view, position, id ->
-                    // Al seleccionar un ítem, guarda el ID correspondiente
                     selectedCategoriaId = categorias[position].value
                 }
             },
@@ -175,9 +181,7 @@ class ActualizarProductoFragment : Fragment() {
         )
     }
 
-    /**
-     * Carga las marcas desde el servicio y las configura en el AutoCompleteTextView.
-     */
+    // Función cargarMarcas (asegúrate de que tenga la lógica para pre-seleccionar)
     private fun cargarMarcas() {
         marcaService.selectMarcas(
             onSuccess = { data ->
@@ -185,12 +189,18 @@ class ActualizarProductoFragment : Fragment() {
                 val adapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    marcas.map { it.name } // Mapea los objetos a solo sus nombres para el adaptador
+                    marcas.map { it.name }
                 )
                 binding.actvMarca.setAdapter(adapter)
 
+                // ESTO ES CLAVE: Establece el ID si el nombre de marca ya existe
+                val currentMarca = marcas.find { it.name == nombreMarca }
+                currentMarca?.let {
+                    binding.actvMarca.setText(it.name, false)
+                    selectedMarcaId = it.value // Establece el ID aquí
+                }
+
                 binding.actvMarca.setOnItemClickListener { parent, view, position, id ->
-                    // Al seleccionar un ítem, guarda el ID correspondiente
                     selectedMarcaId = marcas[position].value
                 }
             },
@@ -208,10 +218,13 @@ class ActualizarProductoFragment : Fragment() {
         val precio = binding.edtPrecio.text.toString().trim()
         val stock = binding.edtStock.text.toString().trim()
         val imgProducto = binding.tvArchivoSeleccionado.text.toString().trim()
-        val idCategoria = this.selectedCategoriaId ?: categorias.find { it.name == binding.actvCategoria.text.toString() }?.value
-        val idMarca = this.selectedMarcaId ?: marcas.find { it.name == binding.actvMarca.text.toString() }?.value
+        val idCategoria = selectedCategoriaId ?: categorias.find { it.name == nombreCategoria }?.value
+        val idMarca = selectedMarcaId ?: marcas.find { it.name == nombreMarca }?.value
         val estado = binding.checkBox.isChecked
 
+        Log.d("ActualizarProducto", "ID de Categoría a enviar: $idCategoria")
+        Log.d("ActualizarProducto", "ID de Marca a enviar: $idMarca")
+        Log.d("ActualizarProducto", "Estado del Producto a enviar: $estado")
 
         if (nombre.isEmpty() || descripcion.isEmpty() || precio.isEmpty() || stock.isEmpty() || idCategoria == null || idMarca == null) {
             Toast.makeText(requireContext(), "Por favor, completa todos los campos, incluyendo categoría y marca.", Toast.LENGTH_SHORT).show()
@@ -234,7 +247,7 @@ class ActualizarProductoFragment : Fragment() {
         productoData["descripcion"] = descripcion.toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["preUni"] = preUniValue.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["stock"] = stockValue.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-        productoData["estProducto"] = (if (estado) "1" else "0".toRequestBody("text/plain".toMediaTypeOrNull())) as RequestBody
+        productoData["estProducto"] = (if (estado) "true" else "false").toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["idCategoria"] = idCategoria.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["idMarca"] = idMarca.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
