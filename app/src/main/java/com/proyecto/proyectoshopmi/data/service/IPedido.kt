@@ -3,7 +3,7 @@ package com.proyecto.proyectoshopmi.data.service
 import com.proyecto.proyectoshopmi.data.model.request.PedidoDetalleRequest
 import com.proyecto.proyectoshopmi.data.model.response.PedidoDetalleResponse
 import com.proyecto.proyectoshopmi.data.model.response.PedidoResponse
-import com.proyecto.proyectoshopmi.data.model.response.RegisterResponse
+import com.proyecto.proyectoshopmi.data.model.response.GeneralResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -18,15 +18,15 @@ interface IPedido {
     fun listarPedidos(): Call<List<PedidoResponse>>
 
     @GET("pedidos/obtenerPedido/{codPedido}")
-    fun obtenerPedido(@Path("codPedido") codPedido: Int): PedidoDetalleResponse
+    fun obtenerPedido(@Path("codPedido") codPedido: Int): Call<PedidoDetalleResponse>
 
     @POST("pedidos/registrarPedido")
-    fun registrarPedido(@Body pedidoDetalleRequest: PedidoDetalleRequest): Call<RegisterResponse>
+    fun registrarPedido(@Body pedidoDetalleRequest: PedidoDetalleRequest): Call<GeneralResponse>
 
     @PUT("pedidos/actualizarPedido/{codPedido}")
-    fun actualizarPedido(@Path("codPedido") codPedido: Int, @Body codEstado: Int): Call<String>
+    fun actualizarPedido(@Path("codPedido") codPedido: Int, @Body codEstado: Int): Call<GeneralResponse>
 
     @DELETE("pedidos/eliminarPedido/{codPedido}")
-    fun eliminarPedido(@Path("codPedido") codPedido: Int): Call<String>
+    fun eliminarPedido(@Path("codPedido") codPedido: Int): Call<GeneralResponse>
 
 }

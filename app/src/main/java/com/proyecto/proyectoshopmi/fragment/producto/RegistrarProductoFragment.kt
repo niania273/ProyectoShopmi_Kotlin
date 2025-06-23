@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide // Asegúrate de que Glide esté en tus dependencias si lo usas para cargar imágenes
 import com.proyecto.proyectoshopmi.R
@@ -21,6 +20,7 @@ import com.proyecto.proyectoshopmi.data.model.response.SelectResponse
 import com.proyecto.proyectoshopmi.data.service.CategoriaService
 import com.proyecto.proyectoshopmi.data.service.MarcaService
 import com.proyecto.proyectoshopmi.databinding.FragmentRegistrarProductoBinding
+import com.proyecto.proyectoshopmi.fragment.HomeFragment
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -47,7 +47,7 @@ class RegistrarProductoFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 // Muestra el nombre del archivo seleccionado
-                binding.tvArchivoSeleccionado.text = getFileName(it)
+                binding.tvArchivoSeleccionado.text = getFileNameFromUri(requireContext(), it)
                 // Convierte la URI a un archivo temporal para la subida
                 selectedImageFile = uriToFile(requireContext(), it)
 
@@ -93,9 +93,12 @@ class RegistrarProductoFragment : Fragment() {
 
         // Listener para el botón de cancelar
         binding.btnCancelar.setOnClickListener {
-            // Navegar de regreso al Fragment_home
-            findNavController().navigate(R.id.action_registrarProductoFragment_to_productoFragment)
-            Toast.makeText(requireContext(), "Registro cancelado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Operación cancelada", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content_frame, HomeFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -189,10 +192,10 @@ class RegistrarProductoFragment : Fragment() {
         // Construcción del mapa de datos para el producto
         val productoData = mutableMapOf<String, RequestBody>()
 
-        // Se convierte el texto del EditText a Int o 0 si está vacío/inválido.
-        // Asegúrate que tu backend maneje '0' correctamente si no es un ID autoincremental
-        val codProducto = binding.editTextText.text.toString().toIntOrNull() ?: 0
-        productoData["codProducto"] = codProducto.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        // El codProducto es autoincremental, no se envía desde el cliente.
+        // Comentamos o eliminamos la línea de codProducto
+        // val codProducto = binding.editTextText.text.toString().toIntOrNull() ?: 0
+        // productoData["codProducto"] = codProducto.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         productoData["nomProducto"] = binding.editTextText2.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["descripcion"] = binding.etDescripcion.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
@@ -238,7 +241,7 @@ class RegistrarProductoFragment : Fragment() {
      * Obtiene el nombre de archivo a partir de una URI.
      * Intenta obtener el DISPLAY_NAME del ContentProvider; si no, usa una parte de la ruta.
      */
-    private fun getFileName(uri: Uri): String {
+    private fun getFileNameFromUri(context: Context, uri: Uri): String {
         var result: String? = null
         if (uri.scheme == "content") {
             // Intenta obtener el nombre de columna DISPLAY_NAME del ContentProvider
@@ -269,28 +272,25 @@ class RegistrarProductoFragment : Fragment() {
      */
     private fun uriToFile(context: Context, uri: Uri): File? {
         val contentResolver = context.contentResolver
-        val fileName = getFileName(uri) // Obtén un nombre de archivo
-        val tempFile = File(context.cacheDir, fileName) // Crea un archivo temporal en la caché
+        val fileName = getFileNameFromUri(context, uri)
+        val tempFile = File(context.cacheDir, fileName)
 
         return try {
             contentResolver.openInputStream(uri)?.use { inputStream: InputStream ->
                 FileOutputStream(tempFile).use { outputStream ->
-                    inputStream.copyTo(outputStream) // Copia el contenido de la URI al archivo temporal
+                    inputStream.copyTo(outputStream)
                 }
             }
-            tempFile // Retorna el archivo temporal
+            tempFile
         } catch (e: Exception) {
-            e.printStackTrace() // Imprime la traza del error si algo sale mal
+            e.printStackTrace()
             Toast.makeText(context, "Error al crear archivo temporal: ${e.message}", Toast.LENGTH_LONG).show()
-            null // Retorna null en caso de error
+            null
         }
     }
 
-    /**
-     * Limpia todos los campos del formulario y restablece las selecciones.
-     */
     private fun clearForm() {
-        binding.editTextText.text.clear()
+        // binding.editTextText.text.clear()
         binding.editTextText2.text.clear()
         binding.editTextText3.text.clear()
         binding.editTextText4.text.clear()
@@ -306,6 +306,6 @@ class RegistrarProductoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Limpia el binding para evitar fugas de memoria
+        _binding = null
     }
 }

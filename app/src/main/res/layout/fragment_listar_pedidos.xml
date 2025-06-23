@@ -33,4 +33,22 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/headerLayout"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_weight="1"
+            android:overScrollMode="ifContentScrolls"
+            android:paddingBottom="8dp" />
+    </LinearLayout>
+
 </RelativeLayout>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_host_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,30 +36,6 @@
                     android:text="REGISTRAR PRODUCTO"
                     android:textColor="#FF6F00"
                     android:textStyle="bold" />
-
-                <!-- Código -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvCodigo"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="Código" />
-
-                    <EditText
-                        android:id="@+id/editTextText"
-                        android:layout_width="165dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:backgroundTint="#aab7b8"
-                        app:cornerRadius="8dp" />
-
-                </LinearLayout>
 
                 <!-- Nombre -->
                 <LinearLayout
@@ -154,38 +129,38 @@
                         android:padding="0dp"
                         android:layout_marginBottom="14dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnSeleccionarImagen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Seleccionar archivo"
-                        android:textAllCaps="false"
-                        android:textColor="#000000"
-                        android:backgroundTint="#E0E0E0"
-                        app:cornerRadius="8dp"
-                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                        android:insetLeft="0dp"
-                        android:insetRight="0dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:layout_marginEnd="8dp" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSeleccionarImagen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Seleccionar archivo"
+                            android:textAllCaps="false"
+                            android:textColor="#000000"
+                            android:backgroundTint="#E0E0E0"
+                            app:cornerRadius="8dp"
+                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                            android:insetLeft="0dp"
+                            android:insetRight="0dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:layout_marginEnd="8dp" />
 
-                    <TextView
-                        android:id="@+id/tvArchivoSeleccionado"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Ningún archivo seleccionado"
-                        android:textColor="#000000"
-                        android:paddingVertical="12dp"
-                        android:paddingStart="4dp"
-                        android:gravity="center_vertical"/>
+                        <TextView
+                            android:id="@+id/tvArchivoSeleccionado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Ningún archivo seleccionado"
+                            android:textColor="#000000"
+                            android:paddingVertical="12dp"
+                            android:paddingStart="4dp"
+                            android:gravity="center_vertical"/>
+                    </LinearLayout>
+
+
                 </LinearLayout>
-
-
-            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

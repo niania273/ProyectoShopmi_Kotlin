@@ -5,7 +5,7 @@ import com.proyecto.proyectoshopmi.data.client.RetrofitClient
 import com.proyecto.proyectoshopmi.data.model.request.UsuarioRequestLogin
 import com.proyecto.proyectoshopmi.data.model.request.UsuarioRequestRegistro
 import com.proyecto.proyectoshopmi.data.model.response.LoginResponse
-import com.proyecto.proyectoshopmi.data.model.response.RegisterResponse
+import com.proyecto.proyectoshopmi.data.model.response.GeneralResponse
 import com.proyecto.proyectoshopmi.helper.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,8 +21,8 @@ class UsuarioService(private val context: Context){
         onSuccess: (String) -> Unit,
         onError: (String) -> Unit
     ) {
-        api.register(usuarioRequestRegistro).enqueue(object : Callback<RegisterResponse> {
-            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+        api.register(usuarioRequestRegistro).enqueue(object : Callback<GeneralResponse> {
+            override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
                 if (response.isSuccessful) {
                     val mensaje = response.body()?.mensaje ?: "Registro exitoso, pero sin mensaje del servidor."
                     onSuccess(mensaje)
@@ -31,7 +31,7 @@ class UsuarioService(private val context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+            override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
                 onError("Fallo de conexión: ${t.localizedMessage}")
             }
         })
