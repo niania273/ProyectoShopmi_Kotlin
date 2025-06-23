@@ -52,7 +52,7 @@
                         android:text="Código" />
 
                     <EditText
-                        android:id="@+id/editTextText"
+                        android:id="@+id/edtCodigo"
                         android:layout_width="165dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -76,7 +76,7 @@
                         android:text="Nombre" />
 
                     <EditText
-                        android:id="@+id/editTextText2"
+                        android:id="@+id/edtNombreProducto"
                         android:layout_width="165dp"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -99,7 +99,7 @@
                         android:text="Precio Unitario" />
 
                     <EditText
-                        android:id="@+id/editTextText3"
+                        android:id="@+id/edtPrecio"
                         android:layout_width="165dp"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -121,7 +121,7 @@
                         android:text="Stock" />
 
                     <EditText
-                        android:id="@+id/editTextText4"
+                        android:id="@+id/edtStock"
                         android:layout_width="165dp"
                         android:layout_height="wrap_content"
                         android:inputType="number"

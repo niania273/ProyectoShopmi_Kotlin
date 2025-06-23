@@ -104,6 +104,46 @@ class ProductoService {
         })
     }
 
+    //Actualizar producto
+    fun actualizarProducto(
+        imageFile: File?, //Nueva imagen, puede ser null si no se actualiza
+        productoData: Map<String, RequestBody>,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit
+    ){
+        val imagePart = imageFile?.let {
+            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), it)
+            // "imgProducto" es el nombre del campo para la nueva imagen
+            MultipartBody.Part.createFormData("imgProducto", it.name, requestFile)
+        }
+
+        api.actualizarProducto(imagePart, productoData).enqueue(object : Callback<GeneralResponse> {
+            override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
+                if (response.isSuccessful) {
+                    val generalResponse = response.body()
+
+                    if (generalResponse != null) {
+                        Log.d("ProductoService", "Respuesta de actualización: ${generalResponse.mensaje}")
+                        onSuccess(generalResponse.mensaje)
+                    } else {
+                        Log.e("ProductoService", "Cuerpo de respuesta nulo para una actualización exitosa HTTP.")
+                        onError("Respuesta del servidor vacía o inesperada.")
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("ProductoService", "Error HTTP ${response.code()}: ${errorBody ?: response.message()}")
+                    onError("Error ${response.code()}: ${errorBody ?: response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
+                Log.e("ProductoService", "Fallo de conexión: ${t.localizedMessage}", t)
+                onError("Fallo de conexión: ${t.localizedMessage}")
+            }
+        })
+    }
+
+
 
     fun cambiarEstadoProducto(
         codProducto: Int
