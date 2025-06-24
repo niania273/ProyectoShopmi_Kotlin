@@ -53,9 +53,9 @@ class ActualizarProductoFragment : Fragment() {
     private var preUni: Double = 0.0
     private var stock: Int = 0
     private var descripcion: String = ""
-    private var nombreMarca: String = ""
-    private var nombreCategoria: String = ""
     private var estProducto: Boolean = false
+    private var codCategoria: String = ""
+    private var codMarca:String = ""
 
 
     // Launcher para seleccionar imagen de la galería
@@ -82,9 +82,9 @@ class ActualizarProductoFragment : Fragment() {
             preUni = it.getDouble("preUni", 0.0)
             stock = it.getInt("stock", 0)
             descripcion = it.getString("descripcion", "") ?: ""
-            nombreMarca = it.getString("nombreMarca", "") ?: ""
-            nombreCategoria = it.getString("nombreCategoria", "") ?: ""
             estProducto = it.getBoolean("estProducto", false)
+            codCategoria = it.getString("nomCategoria", "") ?: ""
+            codMarca = it.getString("nombreMarca", "") ?: ""
         }
     }
 
@@ -107,9 +107,12 @@ class ActualizarProductoFragment : Fragment() {
         binding.edtStock.setText(stock.toString()) // Campo de stock
         binding.tvArchivoSeleccionado.text = imgProducto // Campo de imagen (imgProducto)
         binding.etDescripcion.setText(descripcion) // Campo de descripción
-        binding.checkBox.isChecked = estProducto // Campo de estado
-        binding.actvMarca.setText(nombreMarca) // Campo de marca
-        binding.actvCategoria.setText(nombreCategoria) // Campo de categoría
+        Log.d("DEBUG_CHECKBOX", "Valor de 'estProducto' recibido en fragmento: $estProducto")
+        binding.checkBox.isChecked = estProducto
+        Log.d("DEBUG_CHECKBOX", "Estado de 'binding.checkBox.isChecked' DESPUÉS de la asignación: ${binding.checkBox.isChecked}")
+        Log.d("ActualizarProductoFragment", "Valor de codCategoria recibido: $codCategoria")
+        binding.actvCategoria.setText(codCategoria.toString()) // Campo de categoría
+        binding.actvMarca.setText(codMarca.toString()) // Campo de marca
 
         // Cargar imagen existente si hay una URL
         if (imgProducto.isNotEmpty()) {
@@ -157,6 +160,9 @@ class ActualizarProductoFragment : Fragment() {
         categoriaService.selectCategorias(
             onSuccess = { data ->
                 categorias = data
+                Log.d("DEBUG_CATEGORY", "--- INICIO CARGA CATEGORÍAS ---")
+                Log.d("DEBUG_CATEGORY", "Categorías cargadas desde API (nombres): ${data.map { it.name }}") // Muestra todos los nombres cargados
+
                 val adapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
@@ -164,22 +170,34 @@ class ActualizarProductoFragment : Fragment() {
                 )
                 binding.actvCategoria.setAdapter(adapter)
 
-                // ESTO ES CLAVE: Establece el ID si el nombre de categoría ya existe
-                val currentCategory = categorias.find { it.name == nombreCategoria }
+                // --- PUNTO CRÍTICO DE DEPURACIÓN PARA CATEGORÍA ---
+                Log.d("DEBUG_CATEGORY", "Nombre de categoría a buscar (codCategoria): '$codCategoria'")
+                val currentCategory = categorias.find { it.name == codCategoria }
+
                 currentCategory?.let {
                     binding.actvCategoria.setText(it.name, false)
-                    selectedCategoriaId = it.value // Establece el ID aquí
+                    selectedCategoriaId = it.value
+                    Log.d("DEBUG_CATEGORY", "¡ÉXITO! Categoría '${it.name}' (ID: ${it.value}) pre-seleccionada.")
+                    Log.d("DEBUG_CATEGORY", "Texto en actvCategoria DESPUÉS de setear: '${binding.actvCategoria.text}'")
+                } ?: run {
+                    Log.w("DEBUG_CATEGORY", "FALLO: Categoría con nombre '$codCategoria' NO ENCONTRADA en la lista cargada.")
+                    binding.actvCategoria.setText("", false) // Limpiar si no se encuentra
+                    selectedCategoriaId = null
                 }
+                Log.d("DEBUG_CATEGORY", "--- FIN CARGA CATEGORÍAS ---")
 
                 binding.actvCategoria.setOnItemClickListener { parent, view, position, id ->
                     selectedCategoriaId = categorias[position].value
+                    Log.d("DEBUG_CATEGORY", "Categoría seleccionada por el usuario: ${categorias[position].name} (ID: ${selectedCategoriaId})")
                 }
             },
             onError = { errorMessage ->
                 Toast.makeText(requireContext(), "Error al cargar categorías: $errorMessage", Toast.LENGTH_LONG).show()
+                Log.e("DEBUG_CATEGORY_ERROR", "Error al cargar categorías: $errorMessage")
             }
         )
     }
+
 
     // Función cargarMarcas (asegúrate de que tenga la lógica para pre-seleccionar)
     private fun cargarMarcas() {
@@ -194,7 +212,7 @@ class ActualizarProductoFragment : Fragment() {
                 binding.actvMarca.setAdapter(adapter)
 
                 // ESTO ES CLAVE: Establece el ID si el nombre de marca ya existe
-                val currentMarca = marcas.find { it.name == nombreMarca }
+                val currentMarca = marcas.find { it.name == codMarca }
                 currentMarca?.let {
                     binding.actvMarca.setText(it.name, false)
                     selectedMarcaId = it.value // Establece el ID aquí
@@ -218,15 +236,15 @@ class ActualizarProductoFragment : Fragment() {
         val precio = binding.edtPrecio.text.toString().trim()
         val stock = binding.edtStock.text.toString().trim()
         val imgProducto = binding.tvArchivoSeleccionado.text.toString().trim()
-        val idCategoria = selectedCategoriaId ?: categorias.find { it.name == nombreCategoria }?.value
-        val idMarca = selectedMarcaId ?: marcas.find { it.name == nombreMarca }?.value
+        val codCategoria = selectedCategoriaId ?: categorias.find { it.name == this.codCategoria }?.value
+        val codMarca = selectedMarcaId ?: marcas.find { it.name == this.codMarca }?.value
         val estado = binding.checkBox.isChecked
 
-        Log.d("ActualizarProducto", "ID de Categoría a enviar: $idCategoria")
-        Log.d("ActualizarProducto", "ID de Marca a enviar: $idMarca")
+        Log.d("ActualizarProducto", "ID de Categoría a enviar: $codCategoria")
+        Log.d("ActualizarProducto", "ID de Marca a enviar: $codMarca")
         Log.d("ActualizarProducto", "Estado del Producto a enviar: $estado")
 
-        if (nombre.isEmpty() || descripcion.isEmpty() || precio.isEmpty() || stock.isEmpty() || idCategoria == null || idMarca == null) {
+        if (nombre.isEmpty() || descripcion.isEmpty() || precio.isEmpty() || stock.isEmpty() || codCategoria == null || codMarca == null) {
             Toast.makeText(requireContext(), "Por favor, completa todos los campos, incluyendo categoría y marca.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -240,16 +258,28 @@ class ActualizarProductoFragment : Fragment() {
         }
 
         // Construir el mapa de datos para el RequestBody
+        val precioFormateado = String.format("%.2f", preUniValue).replace(',', '.')
         val productoData = mutableMapOf<String, RequestBody>()
+        Log.d("ActualizarProducto", "Datos enviados: \n" +
+                "codProducto: $codProducto\n" +
+                "imgProducto: $imgProducto\n" +
+                "nomProducto: $nombre\n" +
+                "descripcion: $descripcion\n" +
+                "preUni: $precioFormateado\n" +
+                "stock: $stockValue\n" +
+                "estProducto: ${estado.toString().lowercase()}\n" +
+                "codCategoria: $codCategoria\n" +
+                "codMarca: $codMarca"
+        )
         productoData["codProducto"] = codProducto.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["imgProducto"] = imgProducto.toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["nomProducto"] = nombre.toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["descripcion"] = descripcion.toRequestBody("text/plain".toMediaTypeOrNull())
-        productoData["preUni"] = preUniValue.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        productoData["preUni"] = precioFormateado.toRequestBody("text/plain".toMediaTypeOrNull())
         productoData["stock"] = stockValue.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-        productoData["estProducto"] = (if (estado) "true" else "false").toRequestBody("text/plain".toMediaTypeOrNull())
-        productoData["idCategoria"] = idCategoria.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-        productoData["idMarca"] = idMarca.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        productoData["estProducto"] = estado.toString().lowercase().toRequestBody("text/plain".toMediaTypeOrNull())
+        productoData["codCategoria"] = codCategoria.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        productoData["codMarca"] = codMarca.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         // IMPORTANTE: Si no se seleccionó una nueva imagen, envía la URL de la imagen actual
         if (selectedImageFile == null && imgProducto.isNotEmpty()) {
@@ -348,9 +378,9 @@ class ActualizarProductoFragment : Fragment() {
             preUni: Double,
             stock: Int,
             descripcion: String,
-            nombreMarca: String,
-            nombreCategoria: String,
-            estProducto: Boolean
+            estProducto: Boolean,
+            codCategoria: String,
+            codMarca: String
         ) = ActualizarProductoFragment().apply {
             arguments = Bundle().apply {
                 putInt("codProducto", codProducto)
@@ -359,9 +389,9 @@ class ActualizarProductoFragment : Fragment() {
                 putDouble("preUni", preUni)
                 putInt("stock", stock)
                 putString("descripcion", descripcion)
-                putString("nombreMarca", nombreMarca)
-                putString("nombreCategoria", nombreCategoria)
                 putBoolean("estProducto", estProducto)
+                putString("nomCategoria", codCategoria)
+                putString("nombreMarca", codMarca)
             }
         }
     }
