@@ -145,6 +145,8 @@ class ListarProductosFragment : Fragment() {
                     putInt("stock", producto.stock ?: 0)
                     putString("descripcion", producto.descripcion)
                     putString("nombreMarca", producto.nombreMarca)
+                    putString("nomCategoria", producto.nomCategoria)
+                    putBoolean("estProducto", producto.estProducto ?: false)
                 }
 
                 val fragment = VerProductoFragment().apply { arguments = bundle }
@@ -164,6 +166,8 @@ class ListarProductosFragment : Fragment() {
                     putInt("stock", producto.stock ?: 0)
                     putString("descripcion", producto.descripcion)
                     putString("nombreMarca", producto.nombreMarca)
+                    putString("nomCategoria", producto.nomCategoria)
+                    putBoolean("estProducto", producto.estProducto ?: false)
                 }
 
                 val fragment = ActualizarProductoFragment().apply { arguments = bundle }
