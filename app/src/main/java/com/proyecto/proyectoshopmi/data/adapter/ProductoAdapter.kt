@@ -1,6 +1,5 @@
 package com.proyecto.proyectoshopmi.data.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +26,9 @@ class ProductoAdapter(
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_producto, parent, false)
 
+        val sessionManager = SessionManager(parent.context)
         val activity = parent.context as? FragmentActivity
-        return ProductoViewHolder(view, activity)
+        return ProductoViewHolder(view, sessionManager, activity)
     }
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
@@ -45,19 +45,16 @@ class ProductoAdapter(
 
     class ProductoViewHolder(
         itemView: View,
+        private val sessionManager: SessionManager,
         private val activity: FragmentActivity?
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val sessionManager = SessionManager(itemView.context)
-        private val rolId = sessionManager.obtenerUsuario()?.rolId
-
         private val estado: TextView = itemView.findViewById(R.id.tvEstado)
-        private val nombreMarca: TextView = itemView.findViewById(R.id.tvMarca)
+        val nombreMarca: TextView = itemView.findViewById(R.id.tvMarca)
         private val nombre: TextView = itemView.findViewById(R.id.tvNombreProducto)
         private val descripcion: TextView = itemView.findViewById(R.id.tvDescripcion)
         private val precio: TextView = itemView.findViewById(R.id.tvPrecio)
         private val imagen: ImageView = itemView.findViewById(R.id.ivProducto)
-        private val llAgregarCarrito: LinearLayout = itemView.findViewById(R.id.llAgregarCarrito)
         private val btnAgregarCarrito: MaterialButton = itemView.findViewById(R.id.btnAgregarCarrito)
         private val btnActualizar: View = itemView.findViewById(R.id.item_btnActualizar)
         private val btnEliminar: View = itemView.findViewById(R.id.item_btnEliminar)
@@ -70,6 +67,8 @@ class ProductoAdapter(
             onActualizarClicked: ((ProductoResponse) -> Unit)?,
             onDesactivarClicked: ((ProductoResponse) -> Unit)?
         ) {
+            val usuario = sessionManager.obtenerUsuario()
+
             nombreMarca.text = producto.nombreMarca.uppercase()
             nombre.text = producto.nomProducto
             descripcion.text = producto.descripcion
@@ -79,8 +78,6 @@ class ProductoAdapter(
                 estado.text = "Disponible"
                 estado.visibility = View.VISIBLE
             } else {
-                estado.text = "Agotado"
-                estado.setBackgroundColor(Color.RED)
                 estado.visibility = View.GONE
             }
 
@@ -95,25 +92,26 @@ class ProductoAdapter(
                 onViewProductClicked(producto)
             }
 
-            when (rolId) {
-                1 -> {
-                    llAgregarCarrito.visibility = View.VISIBLE
-                    btnAgregarCarrito.setOnClickListener {
-                        onAddToCartClicked(producto)
+            btnAgregarCarrito.visibility = View.GONE
+            layoutBotonesAdicionales.visibility = View.GONE
+
+            if (usuario != null) {
+                when (usuario.rolId) {
+                    1 -> {
+                        btnAgregarCarrito.visibility = View.VISIBLE
+                        btnAgregarCarrito.setOnClickListener {
+                            onAddToCartClicked(producto)
+                        }
                     }
-                }
-                2, 3 -> {
-                    layoutBotonesAdicionales.visibility = View.VISIBLE
-                    btnActualizar.setOnClickListener {
-                        onActualizarClicked?.invoke(producto)
+                    2, 3 -> {
+                        layoutBotonesAdicionales.visibility = View.VISIBLE
+                        btnActualizar.setOnClickListener {
+                            onActualizarClicked?.invoke(producto)
+                        }
+                        btnEliminar.setOnClickListener {
+                            onDesactivarClicked?.invoke(producto)
+                        }
                     }
-                    btnEliminar.setOnClickListener {
-                        onDesactivarClicked?.invoke(producto)
-                    }
-                }
-                else -> {
-                    llAgregarCarrito.visibility = View.GONE
-                    layoutBotonesAdicionales.visibility = View.GONE
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.proyecto.proyectoshopmi.data.service
 
+import android.R
 import android.util.Log
 import com.proyecto.proyectoshopmi.data.client.RetrofitClient
 import com.proyecto.proyectoshopmi.data.model.response.GeneralResponse
@@ -46,7 +47,7 @@ class ProductoService {
         codCategoria: Int,
         onSuccess: (List<ProductoResponse>) -> Unit,
         onError: (String) -> Unit
-    ){
+    ) {
         api.listarPorCategoria(codCategoria).enqueue(object : Callback<List<ProductoResponse>> {
             override fun onResponse(
                 call: Call<List<ProductoResponse>>,
@@ -79,20 +80,32 @@ class ProductoService {
         }
 
         api.registrarProducto(imagePart, productoData).enqueue(object : Callback<GeneralResponse> {
-            override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
+            override fun onResponse(
+                call: Call<GeneralResponse>,
+                response: Response<GeneralResponse>
+            ) {
                 if (response.isSuccessful) {
                     val generalResponse = response.body()
 
                     if (generalResponse != null) {
-                        Log.d("ProductoService", "Respuesta de registro: ${generalResponse.mensaje}")
+                        Log.d(
+                            "ProductoService",
+                            "Respuesta de registro: ${generalResponse.mensaje}"
+                        )
                         onSuccess(generalResponse.mensaje)
                     } else {
-                        Log.e("ProductoService", "Cuerpo de respuesta nulo para un registro exitoso HTTP.")
+                        Log.e(
+                            "ProductoService",
+                            "Cuerpo de respuesta nulo para un registro exitoso HTTP."
+                        )
                         onError("Respuesta del servidor vacía o inesperada.")
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e("ProductoService", "Error HTTP ${response.code()}: ${errorBody ?: response.message()}")
+                    Log.e(
+                        "ProductoService",
+                        "Error HTTP ${response.code()}: ${errorBody ?: response.message()}"
+                    )
                     onError("Error ${response.code()}: ${errorBody ?: response.message()}")
                 }
             }
@@ -110,7 +123,7 @@ class ProductoService {
         productoData: Map<String, RequestBody>,
         onSuccess: (String) -> Unit,
         onError: (String) -> Unit
-    ){
+    ) {
         val imagePart = imageFile?.let {
             val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), it)
             // "imgProducto" es el nombre del campo para la nueva imagen
@@ -118,20 +131,32 @@ class ProductoService {
         }
 
         api.actualizarProducto(imagePart, productoData).enqueue(object : Callback<GeneralResponse> {
-            override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
+            override fun onResponse(
+                call: Call<GeneralResponse>,
+                response: Response<GeneralResponse>
+            ) {
                 if (response.isSuccessful) {
                     val generalResponse = response.body()
 
                     if (generalResponse != null) {
-                        Log.d("ProductoService", "Respuesta de actualización: ${generalResponse.mensaje}")
+                        Log.d(
+                            "ProductoService",
+                            "Respuesta de actualización: ${generalResponse.mensaje}"
+                        )
                         onSuccess(generalResponse.mensaje)
                     } else {
-                        Log.e("ProductoService", "Cuerpo de respuesta nulo para una actualización exitosa HTTP.")
+                        Log.e(
+                            "ProductoService",
+                            "Cuerpo de respuesta nulo para una actualización exitosa HTTP."
+                        )
                         onError("Respuesta del servidor vacía o inesperada.")
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e("ProductoService", "Error HTTP ${response.code()}: ${errorBody ?: response.message()}")
+                    Log.e(
+                        "ProductoService",
+                        "Error HTTP ${response.code()}: ${errorBody ?: response.message()}"
+                    )
                     onError("Error ${response.code()}: ${errorBody ?: response.message()}")
                 }
             }
@@ -143,12 +168,49 @@ class ProductoService {
         })
     }
 
-
-
     fun cambiarEstadoProducto(
-        codProducto: Int
-    ){
-        api.cambiarEstadoProducto(codProducto)
+        codProducto: Int,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        api.cambiarEstadoProducto(codProducto).enqueue(object : Callback<String> {
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                if (response.isSuccessful) {
+                    val mensaje = response.body()
+
+                    if (mensaje != null) {
+                        Log.d(
+                            "ProductoService",
+                            "Respuesta de cambio de estado: $mensaje"
+                        )
+                        onSuccess(mensaje)
+                    } else {
+                        Log.e(
+                            "ProductoService",
+                            "Cuerpo de respuesta nulo para un cambio de estado exitoso HTTP."
+                        )
+                        onError("Respuesta del servidor vacía o inesperada.")
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e(
+                        "ProductoService",
+                        "Error HTTP ${response.code()}: ${errorBody ?: response.message()}"
+                    )
+                    onError("Error ${response.code()}: ${errorBody ?: response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("ProductoService", "Fallo de conexión: ${t.localizedMessage}", t)
+                onError("Fallo de conexión: ${t.localizedMessage}")
+            }
+        })
     }
+
 
 }
